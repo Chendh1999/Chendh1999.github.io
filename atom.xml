@@ -321,9 +321,9 @@
     
     <category term="GIS" scheme="https://chendh.top/tags/GIS/"/>
     
-    <category term="PostSQL" scheme="https://chendh.top/tags/PostSQL/"/>
-    
     <category term="PostGIS" scheme="https://chendh.top/tags/PostGIS/"/>
+    
+    <category term="PostSQL" scheme="https://chendh.top/tags/PostSQL/"/>
     
   </entry>
   
