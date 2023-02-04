@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Springboot快速入门（六）——Web开发：增删改查员工 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Springboot快速入门（六）——Web开发：增删改查员工</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-09-30 20:10:08
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Springboot/" title="Springboot">
+                    <b>#</b> Springboot
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Java/" title="Java">
+                    <b>#</b> Java
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="1-员工列表展示（查）"><a href="#1-员工列表展示（查）" class="headerlink" title="1. 员工列表展示（查）"></a>1. 员工列表展示（查）</h2><blockquote>
+<p>界面的导航栏和侧边栏都是公共界面，所以可以一起提取出来做成一个commons页面</p>
+</blockquote>
+<blockquote>
+<p> 抽取公共片段 th:fragment 定义模板名</p>
+<p> 引入公共片段 th:insert 插入模板名</p>
+</blockquote>
+<h3 id="1-1-员工列表的跳转"><a href="#1-1-员工列表的跳转" class="headerlink" title="1.1 员工列表的跳转"></a>1.1 员工列表的跳转</h3><ul>
+<li><p>将<code>list.html</code>文件放到emp文件夹下</p>
+<p><img src="https://img-blog.csdnimg.cn/bb04c572b3974cc790cde118b196c454.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li><p>编写Controller</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmployeeController</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    EmployeeDao employeeDao;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 查询所有员工，返回列表页面</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> model</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/emps&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">list</span><span class="params">(Model model)</span>&#123;</span><br><span class="line">        Collection&lt;Employee&gt; employees = employeeDao.getAll();</span><br><span class="line">        <span class="comment">// 结果返回前端</span></span><br><span class="line">        model.addAttribute(<span class="string">&quot;emps&quot;</span>,employees);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;emp/list&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-2-提取公共页面并插入"><a href="#1-2-提取公共页面并插入" class="headerlink" title="1.2 提取公共页面并插入"></a>1.2 提取公共页面并插入</h3><ul>
+<li><p><code>templates</code>目录下新建一个<code>commons</code>包，其中新建<code>commons.html</code>用来放置公共页面代码</p>
+</li>
+<li><p>把<code>dashboard.html</code>和<code>list.html</code>中顶部导航栏和侧边栏的代码放入<code>commons.html</code>页面；  </p>
+</li>
+<li><p>并删除<code>dashboard.html</code>和<code>list.html</code>中的导航栏和侧边栏代码</p>
+</li>
+<li><p>分别在<code>dashboard.html</code>和<code>list.html</code>删除的部分插入提取出来的公共部分<strong>topbar</strong>和<strong>sidebar</strong></p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">xmlns:th</span>=<span class="string">&quot;http://www.thymeleaf.org&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--顶部导航栏，利用th:fragment提取出来，命名为topbar--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0&quot;</span> <span class="attr">th:fragment</span>=<span class="string">&quot;topbar&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;navbar-brand col-sm-3 col-md-2 mr-0&quot;</span> <span class="attr">href</span>=<span class="string">&quot;http://getbootstrap.com/docs/4.0/examples/dashboard/#&quot;</span>&gt;</span>[[$&#123;session.loginUser&#125;]]<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    ·························································</span><br><span class="line">    ·························································</span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">&lt;!--侧边栏，利用th:fragment提取出来，命名为sidebar--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;col-md-2 d-none d-md-block bg-light sidebar&quot;</span> <span class="attr">th:fragment</span>=<span class="string">&quot;sidebar&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;sidebar-sticky&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;nav flex-column&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link active&quot;</span> <span class="attr">href</span>=<span class="string">&quot;http://getbootstrap.com/docs/4.0/examples/dashboard/#&quot;</span>&gt;</span></span><br><span class="line">                    ·············································</span><br><span class="line">                    ·············································</span><br><span class="line">                    首页 <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;sr-only&quot;</span>&gt;</span>(current)<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   ·········································</span><br><span class="line">            ············································</span><br><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;nav-item&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/emps&#125;&quot;</span>&gt;</span></span><br><span class="line">                    ··············································</span><br><span class="line">                    ··············································</span><br><span class="line">                    员工管理</span><br><span class="line">                <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line">            </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--导航栏--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">&quot;~&#123;commons/commons::topbar&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container-fluid&quot;</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row&quot;</span>&gt;</span></span><br><span class="line">				<span class="comment">&lt;!--侧边栏--&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">&quot;~&#123;commons/commons::sidebar&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                ·············································</span><br><span class="line">                ·············································</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-高亮"><a href="#1-3-高亮" class="headerlink" title="1.3 高亮"></a>1.3 高亮</h3><blockquote>
+<p>页面中，使高亮的代码是<code>class=&quot;nav-link active&quot;</code>属性</p>
+</blockquote>
+<ul>
+<li><p><strong>dashboard.html</strong>页面</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--侧边栏--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">&quot;~&#123;commons/commons::sidebar(active=&#x27;main.html&#x27;)&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>list.html</strong>页面</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--侧边栏--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">&quot;~&#123;commons/commons::siderbar(active=&#x27;list.html&#x27;)&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p><strong>commons.html</strong>页面，利用三元运算符判断决定是否高亮</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">th:class</span>=<span class="string">&quot;$&#123;active==&#x27;main.html&#x27;?&#x27;nav-link active&#x27;:&#x27;nav-link&#x27;&#125;&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/index.html&#125;&quot;</span>&gt;</span>  首页</span><br><span class="line">  </span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">th:class</span>=<span class="string">&quot;$&#123;active==&#x27;list.html&#x27;?&#x27;nav-link active&#x27;:&#x27;nav-link&#x27;&#125;&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/emps&#125;&quot;</span>&gt;</span> 员工管理</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-4-显示自己的数据值并添加两个按钮"><a href="#1-4-显示自己的数据值并添加两个按钮" class="headerlink" title="1.4 显示自己的数据值并添加两个按钮"></a>1.4 显示自己的数据值并添加两个按钮</h3><ul>
+<li><p>修改<strong>list.html</strong>页面，显示自己的数据值</p>
+</li>
+<li><p>修改性别和date的显示，并添加<strong>编辑</strong>和<strong>删除</strong>两个标签</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">thead</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>id<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>lastName<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>email<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>gender<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>department<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>birth<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>操作<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">thead</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">tbody</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--/*@thymesVar id=&quot;emps&quot; type=&quot;templates&quot;*/--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span> <span class="attr">th:each</span>=<span class="string">&quot;emp:$&#123;emps&#125;&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;td th:text=&quot;$&#123;emp.getId()&#125;&quot;&gt;&lt;/td&gt;--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>[[$&#123;emp.getId()&#125;]]<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>[[$&#123;emp.getLastName()&#125;]]<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>[[$&#123;emp.getEmail()&#125;]]<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>[[$&#123;emp.getGender()==0?&#x27;女&#x27;:&#x27;男&#x27;&#125;]]<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>[[$&#123;emp.department.getDepartmentName()&#125;]]<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>[[$&#123;emp.getBirth()&#125;]]<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-sm btn-primary&quot;</span>&gt;</span>编辑<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-sm btn-danger&quot;</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tbody</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-5-效果图"><a href="#1-5-效果图" class="headerlink" title="1.5 效果图"></a>1.5 效果图</h3><p><img src="https://s3.bmp.ovh/imgs/2022/09/23/eff5ad4706d2f8ab.png"></p>
+<h2 id="2-增加员工"><a href="#2-增加员工" class="headerlink" title="2. 增加员工"></a>2. 增加员工</h2><h3 id="2-1-修改前端界面"><a href="#2-1-修改前端界面" class="headerlink" title="2.1 修改前端界面"></a>2.1 修改前端界面</h3><h4 id="2-1-1-list-html页面"><a href="#2-1-1-list-html页面" class="headerlink" title="2.1.1 list.html页面"></a>2.1.1 list.html页面</h4><blockquote>
+<p> 新增添加员工按钮，点击该按钮时发起一个请求<code>/add</code></p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">&lt;!--添加员工--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-sm btn-success&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/add&#125;&quot;</span>&gt;</span>添加员工<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-2-add-html页面"><a href="#2-1-2-add-html页面" class="headerlink" title="2.1.2 add.html页面"></a>2.1.2 add.html页面</h4><ul>
+<li><p>复制list.html页面，粘贴到<code>templates/emp</code>下</p>
+</li>
+<li><p>留下头部、导航栏、侧边栏，只把body中的main部分删除</p>
+</li>
+<li><p>bootstrap官网文档 ：<a target="_blank" rel="noopener" href="https://v4.bootcss.com/docs/4.0/components/forms/">https://v4.bootcss.com/docs/4.0/components/forms/</a> 可以去里面找自己喜欢的样式，放到body的侧边栏下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>LastName<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;quary&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Email<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;email&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">placeholder</span>=<span class="string">&quot;1524368@qq.com&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Gender<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-check form-check-inline&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">&quot;form-check-input&quot;</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">&quot;form-check-label&quot;</span>&gt;</span>男<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-check form-check-inline&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">&quot;form-check-input&quot;</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">&quot;form-check-label&quot;</span>&gt;</span>女<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>department<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">select</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">option</span>&gt;</span>1<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">option</span>&gt;</span>2<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">option</span>&gt;</span>3<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">option</span>&gt;</span>4<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">option</span>&gt;</span>5<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Birth<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;quary&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-primary&quot;</span>&gt;</span>添加<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span>  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改页面form表单提交地址和方式</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">th:action</span>=<span class="string">&quot;@&#123;/add&#125;&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给标签添加<code>name</code>属性</p>
+</li>
+<li><p>循环遍历<code>department</code>，特别注意，因部门在前端传入的参数是部门id，所以部门标签处的name属性应为<code>department.id</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">main</span> <span class="attr">role</span>=<span class="string">&quot;main&quot;</span> <span class="attr">class</span>=<span class="string">&quot;col-md-9 ml-sm-auto col-lg-10 pt-3 px-4&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    添加成员        --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">th:action</span>=<span class="string">&quot;@&#123;/add&#125;&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span>LastName<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;lastName&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;quary&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span>Email<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;email&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">placeholder</span>=<span class="string">&quot;15243685@qq.com&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span>Gender<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-check form-check-inline&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">&quot;form-check-input&quot;</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span></span></span><br><span class="line"><span class="tag">                       <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">&quot;form-check-label&quot;</span>&gt;</span>男<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-check form-check-inline&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">&quot;form-check-input&quot;</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span></span></span><br><span class="line"><span class="tag">                       <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">&quot;form-check-label&quot;</span>&gt;</span>女<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span>department<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--注意这里的name是department.id，因为传入的参数为id--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">select</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">name</span>=<span class="string">&quot;department.id&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">option</span> <span class="attr">th:each</span>=<span class="string">&quot;department:$&#123;departments&#125;&quot;</span> <span class="attr">th:text</span>=<span class="string">&quot;$&#123;department.getDepartmentName()&#125;&quot;</span> <span class="attr">th:value</span>=<span class="string">&quot;$&#123;department.getId()&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span>Birth<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;birth&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;birth:yyyy/MM/dd&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-primary&quot;</span>&gt;</span>添加<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-2-修改后端"><a href="#2-2-修改后端" class="headerlink" title="2.2 修改后端"></a>2.2 修改后端</h3><h4 id="EmployeeController-java文件"><a href="#EmployeeController-java文件" class="headerlink" title="EmployeeController.java文件"></a>EmployeeController.java文件</h4><ul>
+<li><p><strong>add方法</strong></p>
+<p>处理<code>添加员工</code>的请求，通过<code>get</code>方式提交请求，在<code>EmployeeController</code>中添加一个<code>add</code>方法用来处理<code>list</code>页面点击提交按钮的操作，返回到<code>add.html</code>添加员工页面。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired(required = false)</span></span><br><span class="line">DepartmentDao departmentDao;</span><br><span class="line">  </span><br><span class="line"><span class="meta">@GetMapping(&quot;/add&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">add</span><span class="params">(Model model)</span>&#123;</span><br><span class="line">     <span class="comment">//查出所有的部门信息</span></span><br><span class="line">    Collection&lt;Department&gt; departments = departmentDao.getDepartments();</span><br><span class="line">    model.addAttribute(<span class="string">&quot;departments&quot;</span>,departments);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;emp/add&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>addEmp方法</strong></p>
+<p>处理点击<code>添加按钮</code>的操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping(&quot;/add&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">addEmp</span><span class="params">(Employee employee)</span> &#123;</span><br><span class="line">    System.out.println(employee);</span><br><span class="line">    <span class="comment">// 添加员工</span></span><br><span class="line">    employeeDao.save(employee);   <span class="comment">//调用底层业务方法保存员工信息</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;redirect:/emps&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-3-结果图"><a href="#2-3-结果图" class="headerlink" title="2.3 结果图"></a>2.3 结果图</h3><img src="https://s3.bmp.ovh/imgs/2022/09/27/dfe619f82e9f078a.png" style="zoom: 50%;">
+
+<img src="https://s3.bmp.ovh/imgs/2022/09/27/f6d30df7e0550726.png" style="zoom:50%;">
+
+<h2 id="3-修改员工信息"><a href="#3-修改员工信息" class="headerlink" title="3 修改员工信息"></a>3 修改员工信息</h2><h3 id="3-1-修改前端界面"><a href="#3-1-修改前端界面" class="headerlink" title="3.1 修改前端界面"></a>3.1 修改前端界面</h3><h4 id="3-1-1-list-html页面"><a href="#3-1-1-list-html页面" class="headerlink" title="3.1.1 list.html页面"></a>3.1.1 list.html页面</h4><blockquote>
+<p>点击<code>编辑</code>标签时，跳转到编辑页面<code>update.html</code></p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-sm btn-primary&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/edit/&#123;id&#125;(id=$&#123;emp.getId()&#125;)&#125;&quot;</span>&gt;</span>编辑<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-1-2-update-html页面"><a href="#3-1-2-update-html页面" class="headerlink" title="3.1.2 update.html页面"></a>3.1.2 update.html页面</h4><blockquote>
+<p>将add页面复制一份改为update页面，将后台查询的数据回显</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">th:action</span>=<span class="string">&quot;@&#123;/edit&#125;&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>LastName<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">&quot;$&#123;emp.getLastName()&#125;&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;lastName&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">placeholder</span>=<span class="string">&quot;lastname:zsr&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Email<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">&quot;$&#123;emp.getEmail()&#125;&quot;</span> <span class="attr">type</span>=<span class="string">&quot;email&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">placeholder</span>=<span class="string">&quot;email:xxxxx@qq.com&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Gender<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-check form-check-inline&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:checked</span>=<span class="string">&quot;$&#123;emp.getGender()==1&#125;&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-check-input&quot;</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">&quot;form-check-label&quot;</span>&gt;</span>男<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-check form-check-inline&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:checked</span>=<span class="string">&quot;$&#123;emp.getGender()==0&#125;&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-check-input&quot;</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span></span></span><br><span class="line"><span class="tag">                   <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">&quot;form-check-label&quot;</span>&gt;</span>女<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>department<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--注意这里的name是department.id，因为传入的参数为id--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">select</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">name</span>=<span class="string">&quot;department.id&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">option</span> <span class="attr">th:selected</span>=<span class="string">&quot;$&#123;department.getId()==emp.department.getId()&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                    <span class="attr">th:each</span>=<span class="string">&quot;department:$&#123;departments&#125;&quot;</span> </span></span><br><span class="line"><span class="tag">                    <span class="attr">th:text</span>=<span class="string">&quot;$&#123;department.getDepartmentName()&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                    <span class="attr">th:value</span>=<span class="string">&quot;$&#123;department.getId()&#125;&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;form-group&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Birth<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--springboot默认的日期格式为yy/MM/dd--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">&quot;$&#123;emp.getBirth()&#125;&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;birth&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;birth:yyyy/MM/dd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-primary&quot;</span>&gt;</span>修改<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规定一下显示的日期格式</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--springboot默认的日期格式为yy/MM/dd--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">&quot;$&#123;#dates.format(emp.getBirth(),&#x27;yyyy-MM-dd&#x27;)&#125;&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;date&quot;</span> <span class="attr">class</span>=<span class="string">&quot;form-control&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">placeholder</span>=<span class="string">&quot;birth:yy/MM/dd&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改表单提交的地址</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">th:action</span>=<span class="string">&quot;@&#123;/updateEmp&#125;&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>指定修改人的id</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">th:value</span>=<span class="string">&quot;$&#123;emp.getId()&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-修改后端"><a href="#3-2-修改后端" class="headerlink" title="3.2 修改后端"></a>3.2 修改后端</h3><h4 id="EmployeeController-java文件-1"><a href="#EmployeeController-java文件-1" class="headerlink" title="EmployeeController.java文件"></a>EmployeeController.java文件</h4><ul>
+<li><p><strong>toUpdateAll方法</strong></p>
+<p>员工的修改页面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(&quot;/edit/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toUpdateAll</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> <span class="type">int</span> id,Model model)</span>&#123;</span><br><span class="line">        <span class="comment">//查询指定的id员工，添加到emp中，用于前端接收</span></span><br><span class="line">        Employee employee=employeeDao.getEmployee(id);</span><br><span class="line">        model.addAttribute(<span class="string">&quot;emp&quot;</span>,employee);</span><br><span class="line">        <span class="comment">//查出所有的部门信息，添加到department中，用于前端接收</span></span><br><span class="line">        Collection&lt;Department&gt; departments=departmentDao.getDepartments();</span><br><span class="line">        model.addAttribute(<span class="string">&quot;departments&quot;</span>,departments);</span><br><span class="line">        <span class="comment">//返回编辑员工页面</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;/emp/update&quot;</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>updateEmp方法</strong></p>
+<p>保存修改的内容，回到列表页面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping(&quot;/updateEmp&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">updateEmp</span><span class="params">(Employee employee)</span>&#123;</span><br><span class="line">        employeeDao.save(employee);</span><br><span class="line">        <span class="comment">//回到员工列表页面</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;redirect:/emps&quot;</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-3-结果图"><a href="#3-3-结果图" class="headerlink" title="3.3 结果图"></a>3.3 结果图</h3><img src="https://s3.bmp.ovh/imgs/2022/09/30/049a9dc4d7548357.png" style="zoom:50%;">
+
+<h3 id="3-4-出错"><a href="#3-4-出错" class="headerlink" title="3.4 出错"></a>3.4 出错</h3><blockquote>
+<p>点击修改按钮之后页面跳转之后没有数据</p>
+</blockquote>
+<p>经过往前的排查，最后发现是在创建部门表的时候id不对应！！！本来应该是1001，写成了101。虽然在增加数据的时候没问题，但是在修改数据和删改数据的时候就读取不到正确的数据了！</p>
+<img src="https://s3.bmp.ovh/imgs/2022/09/30/66ca8b475896ee8a.png" style="zoom: 50%;">
+
+
+
+<img src="https://s3.bmp.ovh/imgs/2022/09/30/047b44662a44fbcf.png" style="zoom: 50%;">
+
+
+
+<h2 id="4-删除数据"><a href="#4-删除数据" class="headerlink" title="4 删除数据"></a>4 删除数据</h2><h3 id="4-1-修改前端界面"><a href="#4-1-修改前端界面" class="headerlink" title="4.1 修改前端界面"></a>4.1 修改前端界面</h3><ul>
+<li><strong>list.html页面</strong></li>
+</ul>
+<blockquote>
+<p>点击<code>删除</code>标签是，发起一个请求，删除指定的用户，再重新返回到<code>list</code>页面显示员工数据</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-sm btn-danger&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/delete/&#123;id&#125;(id=$&#123;emp.getId()&#125;)&#125;&quot;</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-修改后端"><a href="#4-2-修改后端" class="headerlink" title="4.2 修改后端"></a>4.2 修改后端</h3><h5 id="EmployeeController-java文件-2"><a href="#EmployeeController-java文件-2" class="headerlink" title="EmployeeController.java文件"></a>EmployeeController.java文件</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/delete/&#123;id&#125;&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">delete</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span> &#123;</span><br><span class="line">    employeeDao.delete(id);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;redirect:/emps&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/09/27/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94Debug%EF%BC%9A%E5%A2%9E%E5%8A%A0%E5%91%98%E5%B7%A5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-09-30 20:10:08
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Springboot/" title="Springboot">
+                        <b>#</b> Springboot
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Java/" title="Java">
+                        <b>#</b> Java
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/10/05/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%83%EF%BC%89%E2%80%94%E2%80%94%E5%B7%A9%E5%9B%BA%E7%9F%A5%E6%96%B0%EF%BC%88%E4%B8%80%EF%BC%89/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%91%98%E5%B7%A5%E5%88%97%E8%A1%A8%E5%B1%95%E7%A4%BA%EF%BC%88%E6%9F%A5%EF%BC%89"><span class="toc-text">1. 员工列表展示（查）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%91%98%E5%B7%A5%E5%88%97%E8%A1%A8%E7%9A%84%E8%B7%B3%E8%BD%AC"><span class="toc-text">1.1 员工列表的跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%8F%90%E5%8F%96%E5%85%AC%E5%85%B1%E9%A1%B5%E9%9D%A2%E5%B9%B6%E6%8F%92%E5%85%A5"><span class="toc-text">1.2 提取公共页面并插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E9%AB%98%E4%BA%AE"><span class="toc-text">1.3 高亮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E6%98%BE%E7%A4%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E6%95%B0%E6%8D%AE%E5%80%BC%E5%B9%B6%E6%B7%BB%E5%8A%A0%E4%B8%A4%E4%B8%AA%E6%8C%89%E9%92%AE"><span class="toc-text">1.4 显示自己的数据值并添加两个按钮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="toc-text">1.5 效果图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A2%9E%E5%8A%A0%E5%91%98%E5%B7%A5"><span class="toc-text">2. 增加员工</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BF%AE%E6%94%B9%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2"><span class="toc-text">2.1 修改前端界面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-list-html%E9%A1%B5%E9%9D%A2"><span class="toc-text">2.1.1 list.html页面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-add-html%E9%A1%B5%E9%9D%A2"><span class="toc-text">2.1.2 add.html页面</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%BF%AE%E6%94%B9%E5%90%8E%E7%AB%AF"><span class="toc-text">2.2 修改后端</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EmployeeController-java%E6%96%87%E4%BB%B6"><span class="toc-text">EmployeeController.java文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%BB%93%E6%9E%9C%E5%9B%BE"><span class="toc-text">2.3 结果图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E5%91%98%E5%B7%A5%E4%BF%A1%E6%81%AF"><span class="toc-text">3 修改员工信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BF%AE%E6%94%B9%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2"><span class="toc-text">3.1 修改前端界面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-1-list-html%E9%A1%B5%E9%9D%A2"><span class="toc-text">3.1.1 list.html页面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-2-update-html%E9%A1%B5%E9%9D%A2"><span class="toc-text">3.1.2 update.html页面</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BF%AE%E6%94%B9%E5%90%8E%E7%AB%AF"><span class="toc-text">3.2 修改后端</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EmployeeController-java%E6%96%87%E4%BB%B6-1"><span class="toc-text">EmployeeController.java文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E7%BB%93%E6%9E%9C%E5%9B%BE"><span class="toc-text">3.3 结果图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%87%BA%E9%94%99"><span class="toc-text">3.4 出错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="toc-text">4 删除数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%BF%AE%E6%94%B9%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2"><span class="toc-text">4.1 修改前端界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%BF%AE%E6%94%B9%E5%90%8E%E7%AB%AF"><span class="toc-text">4.2 修改后端</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#EmployeeController-java%E6%96%87%E4%BB%B6-2"><span class="toc-text">EmployeeController.java文件</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

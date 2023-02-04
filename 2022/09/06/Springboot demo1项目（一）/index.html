@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Springboot demo1项目（一） 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Springboot demo1项目（一）</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-09-06 10:19:21
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Springboot/" title="Springboot">
+                    <b>#</b> Springboot
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Java/" title="Java">
+                    <b>#</b> Java
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="1-注解有什么用？"><a href="#1-注解有什么用？" class="headerlink" title="1. 注解有什么用？"></a>1. 注解有什么用？</h3><ul>
+<li><p>注解里面不用写方法变量什么的，只起一个标注的作用，不是具体代码，标识类或方法等需要执行的任务</p>
+</li>
+<li><p>在编译期间或者运行期间读取程序，通过反射机制去判断及读取相应操作，当程序运行时需要反射机制去获取哪些方法、类、变量等添加了该注解。<br> <img src="https://s3.bmp.ovh/imgs/2022/09/06/07b5a6ea6a1cb862.png"><br> <img src="https://s3.bmp.ovh/imgs/2022/09/06/fc38e5fb08c6e549.png"><br> <img src="https://s3.bmp.ovh/imgs/2022/09/06/f1698ec430dc2e32.png"></p>
+</li>
+<li><p>自定义注解：</p>
+<ul>
+<li>添加一个方法注解InitMethod<br><img src="https://s3.bmp.ovh/imgs/2022/09/06/b768fcf0ccefaec7.png"></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">   package cn.bdqn.demo1;</span><br><span class="line">import java.lang.annotation.ElementType;</span><br><span class="line">import java.lang.annotation.Retention;</span><br><span class="line">import java.lang.annotation.RetentionPolicy;</span><br><span class="line">import java.lang.annotation.Target;</span><br><span class="line">@Target(ElementType.METHOD)    //对方法进行注解</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)    //运行时执行注解</span><br><span class="line">public @interface InitMethod&#123;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>写一个InitDemo类使用方法注解</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">   package cn.bdqn.demo1;</span><br><span class="line">public class InitDemo&#123;</span><br><span class="line">@InitMethod</span><br><span class="line">public void init()&#123;</span><br><span class="line">System.out.println(&quot;init.....&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@InitMethod</span><br><span class="line">public void test()&#123;</span><br><span class="line">System.out.println(&quot;test...&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在Test类中遍历InitDemo类中所有方法<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> 	package cn.bdqn.demo1;</span><br><span class="line">import java.lang.reflect.Method;</span><br><span class="line">public class Test&#123;</span><br><span class="line">public static void main(String[]args) throws Exception&#123;</span><br><span class="line">Class clazz=Class.forName(&quot;cn.bdqn.demo1.InitDemo&quot;);//拿到InitDemo类</span><br><span class="line">Method[] methods=clazz.getMethods();//遍历InitDemo类中所有方法</span><br><span class="line">if(methods!=null)&#123;</span><br><span class="line">for(Methodmethod:methods)&#123;</span><br><span class="line">Boolean isInitMethod=method.isAnnotationPresent(InitMethod.class);//isAnnotationPresent判断是否拥有某一个注解，并返回布尔类型</span><br><span class="line">if(isInitMethod)&#123;</span><br><span class="line">method.invoke(clazz.getConstructor(null).newInstance(null),null);</span><br><span class="line">   &#125;&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Py4y1Y77P/?spm_id_from=333.788.recommend_more_video.5&amp;vd_source=e18fd054c638dd62bfe0ba010156eb06">https://www.bilibili.com/video/BV1Py4y1Y77P/?spm_id_from=333.788.recommend_more_video.5&amp;vd_source=e18fd054c638dd62bfe0ba010156eb06</a></li>
+</ul>
+<h3 id="2-程序中所用到的注解"><a href="#2-程序中所用到的注解" class="headerlink" title="2. 程序中所用到的注解"></a>2. 程序中所用到的注解</h3><ul>
+<li>main方法：<ul>
+<li>@SpringBootApplication：申明让Springboot自动给程序进行必要的配置，这个配置等同于：（@Configuration 、@EnableAutoConfiguration 、 @ComponentScan） 三个配置；</li>
+<li><u>@MapperScan(value &#x3D; “cn.bdqn.demo1.mapper”)</u>：指定要扫描的Mapper类的包的路径；</li>
+</ul>
+</li>
+<li>controller层中：<ul>
+<li>@Controller ：用于定义控制器类，在spring项目中由控制器负责将用户发来的URL请求转发到对应的服务接口（service层），<br>  一般这个注解在类中，通常方法需要配合注解@RequestMapping</li>
+<li>@Resource：与@Autowired 用法 用法相似，也是做依赖注入的，从容器中自动获取bean。但还是有一定的区别；</li>
+<li><u>@RequestMapping(“&#x2F;list”)</u>：提供路由信息，负责URL到Controller中的具体函数的映射</li>
+<li><u>@GetMapping(“&#x2F;updatePage&#x2F;{id}”)</u>：get请求，等价于<u>@RequestMapping(value&#x3D;”&#x2F;updatePage&#x2F;{id}”,method&#x3D;RequestMethod.GET)</u></li>
+<li><u>@PostMapping(“&#x2F;update”)</u>：post请求，等价于<u>@RequestMapping(value&#x3D;”&#x2F;update”,method&#x3D;RequestMethod.POST)</u></li>
+<li>@PathVariable：在@RequestMapping注解方法中获取URL变量  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value=&quot;/hello/&#123;id&#125;/&#123;name&#125;&quot;,method= RequestMethod.GET)</span><br><span class="line">publicString sayHello(@PathVariable(&quot;id&quot;) Integer id,@PathVariable(&quot;name&quot;) String name)&#123;</span><br><span class="line">return&quot;id:&quot;+id+&quot; name:&quot;+name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>service层中：<ul>
+<li>@Service：一般用于修饰service层的组件；</li>
+<li>@Override：重写父类；</li>
+</ul>
+</li>
+<li>mapper层&#x2F;dao层：<ul>
+<li>@Mapper：使用@Mapper注解要定义成一个接口interface；不用写mapper映射文件（xml）;为这个接口生成一个实现类，让别的类进行引用；如果有多个类的话，可以使用@MapperScan进行注解，一次性注解多个包；</li>
+<li><u>@Select(“select * from user”)</u>：选择数据库中的数据</li>
+<li><u>@Insert(“ insert into  user( username,password ) values (#{username},#{password}) “)</u>：插入数据库中的数据</li>
+<li><u>@Delete(“ delete from user where id&#x3D; #{id} “)</u>：删除数据库中的数据</li>
+<li><u>@Select(“select * from user where id&#x3D; #{1} “)</u>：按id选择数据库中的数据</li>
+<li><u>@Update(“update user set username&#x3D;#{username},password&#x3D;#{password} where id&#x3D;#{id} “)</u>：更新数据库中的数据</li>
+</ul>
+</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/fenlin88l/article/details/89466723">https://blog.csdn.net/fenlin88l/article/details/89466723</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40753536/article/details/81285046">https://blog.csdn.net/weixin_40753536/article/details/81285046</a></p>
+<h3 id="3-Model层"><a href="#3-Model层" class="headerlink" title="3. Model层"></a>3. Model层</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/list&quot;)//路径</span><br><span class="line">public String userList(Model model)&#123;</span><br><span class="line">List&lt;User&gt; users=userService.findAll();</span><br><span class="line">model.addAttribute(&quot;users&quot;,users);</span><br><span class="line">return&quot;index&quot;;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Model是一个接口，包含addAttribute方法，其实现类是ExtendedModelMap。ExtendedModelMap继承了ModelMap类，ModelMap类实现了Map接口。</li>
+<li>在控制器中，数据会存放到Model对象中，当需要生成HTML的时候，模板引擎会根据名字来定位数据。从广义上来说，Model指的是MVC中的M，即Model(模型)。从狭义上讲，Model就是个key-value集合。<br><img src="https://s3.bmp.ovh/imgs/2022/09/06/8b12ed2675e79c46.png"></li>
+<li>往Model里放数据还有另外一种方式，使用ModelAndView。正如它的名字一样，ModelAndView将Model和视图名绑定在一起，作为请求处理方法的返回值。<br><img src="https://s3.bmp.ovh/imgs/2022/09/06/d0c15144cc7806e7.png"><br>参考：<a target="_blank" rel="noopener" href="https://fookwood.com/spring-boot-tutorial-9-model">https://fookwood.com/spring-boot-tutorial-9-model</a></li>
+</ul>
+<h3 id="4-Integer和int的区别"><a href="#4-Integer和int的区别" class="headerlink" title="4. Integer和int的区别"></a>4. Integer和int的区别</h3><pre><code>基本数据类型: boolean，char，byte，short，int，long，float，double
+封装类类型：Boolean，Character，Byte，Short，Integer，Long，Float，Double
+</code></pre>
+<h4 id="4-1-基本使用对比"><a href="#4-1-基本使用对比" class="headerlink" title="4.1 基本使用对比"></a>4.1 基本使用对比</h4><ul>
+<li>Integer是int的封装类；int是基本数据类型；</li>
+<li>Integer变量必须实例化后才能使用；int变量不需要；</li>
+<li>Integer实际是对象的引用，指向此new的Integer对象；int是直接存储数据值 ；</li>
+<li>Integer的默认值是null；int的默认值是0。<h4 id="4-2-深入对比"><a href="#4-2-深入对比" class="headerlink" title="4.2 深入对比"></a>4.2 深入对比</h4></li>
+<li>由于Integer变量实际上是对一个Integer对象的引用，所以两个通过new生成的Integer变量永远是不相等的（因为new生成的是两个对象，其内存地址不同）<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer i = new Integer(100);</span><br><span class="line">Integer j = new Integer(100);</span><br><span class="line">   System.out.print(i == j); //false</span><br></pre></td></tr></table></figure></li>
+<li>Integer变量和int变量比较时，只要两个变量的值是向等的，则结果为true（因为封装类Integer和基本数据类型int比较时，java会自动拆包装为int，然后进行比较，实际上就变为两个int变量的比较）<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer i = new Integer(100);</span><br><span class="line">int j = 100；</span><br><span class="line">System.out.print(i == j); //true</span><br></pre></td></tr></table></figure></li>
+<li>非new生成的Integer变量和new Integer()生成的变量比较时，结果为false。因为非new生成的Integer变量指向的是静态常量池中cache数组中存储的指向了堆中的Integer对象，而new Integer()生成的变量指向堆中新建的对象，两者在内存中的对象引用（地址）不同<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer i = new Integer(100);</span><br><span class="line">Integer j = 100;</span><br><span class="line">System.out.print(i == j); //false</span><br></pre></td></tr></table></figure></li>
+<li>对于两个非new生成的Integer对象，进行比较时，如果两个变量的值在区间-128到127之间，则比较结果为true，如果两个变量的值不在此区间，则比较结果为false<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer i = 100;</span><br><span class="line">Integer j = 100;</span><br><span class="line">System.out.print(i == j); //true</span><br><span class="line"></span><br><span class="line">Integer i = 128;</span><br><span class="line">Integer j = 128;</span><br><span class="line">System.out.print(i == j); //false</span><br></pre></td></tr></table></figure></li>
+<li>自动装箱和拆箱<ul>
+<li>自动装箱：将基本数据类型重新转化为对象<br>  &#x2F;&#x2F; 声明一个Integer对象，用到了自动的装箱：解析为:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">   Integer num = Integer.valueOf(9);</span><br><span class="line">Integer num = 9;</span><br></pre></td></tr></table></figure></li>
+<li>自动拆箱：将对象重新转化为基本数据类型，因为对象时不能直接进行运算的，而是要转化为基本数据类型后才能进行加减乘除<br>  &#x2F; &#x2F;声明一个Integer对象<br>  <code>   Integer num = 9;  </code><br>   &#x2F;&#x2F; 进行计算时隐含的有自动拆箱<br>   <code>  System.out.print(num--);  </code></li>
+</ul>
+</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/chenliguan/article/details/53888018">https://blog.csdn.net/chenliguan/article/details/53888018</a></p>
+<h3 id="5-HttpServletRequest和HttpServletReponse"><a href="#5-HttpServletRequest和HttpServletReponse" class="headerlink" title="5. HttpServletRequest和HttpServletReponse"></a>5. HttpServletRequest和HttpServletReponse</h3><p>HttpServletRequest对象专门用于封装 HTTP 请求消息，简称 request 对象。</p>
+<p>HttpServletReponse 对象用于封装 HTTP 响应信息。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/08/24/%E8%BF%81%E7%A7%BB%E5%8D%9A%E5%AE%A2/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-09-06 10:19:21
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Springboot/" title="Springboot">
+                        <b>#</b> Springboot
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Java/" title="Java">
+                        <b>#</b> Java
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/09/07/%E6%9C%AC%E5%9C%B0Git%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8BGitHub%E4%BB%93%E5%BA%93/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%B3%A8%E8%A7%A3%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%EF%BC%9F"><span class="toc-text">1. 注解有什么用？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%A8%8B%E5%BA%8F%E4%B8%AD%E6%89%80%E7%94%A8%E5%88%B0%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="toc-text">2. 程序中所用到的注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Model%E5%B1%82"><span class="toc-text">3. Model层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Integer%E5%92%8Cint%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">4. Integer和int的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%AF%B9%E6%AF%94"><span class="toc-text">4.1 基本使用对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E6%B7%B1%E5%85%A5%E5%AF%B9%E6%AF%94"><span class="toc-text">4.2 深入对比</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-HttpServletRequest%E5%92%8CHttpServletReponse"><span class="toc-text">5. HttpServletRequest和HttpServletReponse</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

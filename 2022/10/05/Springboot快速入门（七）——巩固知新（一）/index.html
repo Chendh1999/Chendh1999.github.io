@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Springboot快速入门（七）——巩固知新（一） 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Springboot快速入门（七）——巩固知新（一）</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-10-05 20:51:06
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Springboot/" title="Springboot">
+                    <b>#</b> Springboot
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Java/" title="Java">
+                    <b>#</b> Java
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="1-Map集合、Collection中的集合与List集合的区别"><a href="#1-Map集合、Collection中的集合与List集合的区别" class="headerlink" title="1. Map集合、Collection中的集合与List集合的区别"></a>1. Map集合、Collection中的集合与List集合的区别</h3><p><code>private Map&lt;String,Object&gt; maps;</code></p>
+<p><code>Map&lt;Integer, Department&gt; </code></p>
+<p><code>Collection&lt;Department&gt;</code></p>
+<p><code>private List&lt;Object&gt; list;</code></p>
+<ul>
+<li><p>Map是一个双列集合，存放形式为<strong>键值对（key-value)<strong>。元素是</strong>成对存在</strong>的(理解为夫妻)。每个元素由键与值两部分组成，通过键可以找对所对应的值，<strong>每个键只能对应一个值</strong>，且不能包含重复的键，值可以重复。</p>
+<ul>
+<li>HashMap</li>
+<li>LinkedHashMap</li>
+</ul>
+</li>
+<li><p>Collection中的集合，称为单列集合。元素是<strong>孤立存在</strong>的（理解为单身），向集合中存储元素采用一个个元素的方式存储。</p>
+</li>
+<li><p>List 接口是继承于 Collection接口并定义 一个允许重复项的有序集合。该接口不但能够对列表的一部分进行处理，还添加了面向位置的操作。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/0cb41b7d632b212b032978fd73633d9a.png" alt="0cb41b7d632b212b032978fd73633d9a.png"></p>
+</li>
+</ul>
+<h3 id="2-List＜T＞-、List＜-＞、List＜Object＞、List＜E＞、List＜U＞的区别"><a href="#2-List＜T＞-、List＜-＞、List＜Object＞、List＜E＞、List＜U＞的区别" class="headerlink" title="2. List＜T＞ 、List＜?＞、List＜Object＞、List＜E＞、List＜U＞的区别"></a>2. List＜T＞ 、List＜?＞、List＜Object＞、List＜E＞、List＜U＞的区别</h3><p>List&lt;T&gt;、List&lt;?&gt;、List&lt;Object&gt;这三者都可以容纳所有的对象，但使用的顺序应该是首选List&lt;T&gt;,次之List&lt;?&gt;,最后选择List&lt;Object&gt;</p>
+<ul>
+<li>List&lt;T&gt;表示的是List集合中的元素都为T类型，具体类型在运行期决定。可以进行诸如add、remove等操作，因为它的类型是固定的T类型，在编码期不需要进行任何的转型操作</li>
+<li>List&lt;?&gt;表示的是任意类型。是只读类型的，不能进行增加、修改操作，但是却可以删除元素，比如执行remove、clear等方法。List&lt;?&gt;读取出的元素都是Object类型的，需要主动转型，所以它经常用于泛型方法的返回值</li>
+<li>List&lt;Object&gt;表示List集合中的所有元素为Object类型，Object是所有类的父类，所以List&lt;Object&gt;也可以容纳所有的类类型</li>
+</ul>
+<p><strong>List&lt;E&gt; List&lt;T&gt; Map&lt;K, V&gt;</strong></p>
+<p>E是Element首字母的缩写，E通常用来表示<strong>集合类型中的元素类型</strong>；</p>
+<ul>
+<li><p>例如List接口的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">List</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">Collection</span>&lt;E&gt; </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>K，V是Key, Value的首字符缩写，通常用来表示Map的键值类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Map</span>&lt;K, V&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>&lt;T&gt; T 表示“返回值”是一个泛型，传递什么类型，就返回什么类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; T <span class="title function_">getListFirst</span><span class="params">(List&lt;T&gt; data)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(data == <span class="literal">null</span> || data.size() == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> data.get(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-AllArgsConstructor和-NoArgsConstructor"><a href="#3-AllArgsConstructor和-NoArgsConstructor" class="headerlink" title="3. @AllArgsConstructor和@NoArgsConstructor"></a>3. @AllArgsConstructor和@NoArgsConstructor</h3><ul>
+<li><p><strong>lombok</strong></p>
+<blockquote>
+<p>在开发过程中，lombok的使用极大的简化了实体类的开发工作。在通常情况下我们需要手动去建立getter和setter方法，构造函数之类的，而lombok的作用就是能够在我们编译源码的时候自动帮我们生成这些方法，这些都是通过注解的方式：如：@builder, @NoArgsConstructor, @AllArgsConstructor, @Getter, @Setter, @data等。</p>
+</blockquote>
+</li>
+<li><p><strong>@AllArgsContructor：</strong> 会生成一个包含所有变量的构造方法，默认生成的方法是 public 的（有参）</p>
+</li>
+<li><p><strong>@NoArgsConstructor ：</strong> 生成一个无参数的构造方法（无参）</p>
+</li>
+<li><p><strong>@RequiredArgsConstructor：</strong> 会生成一个包含常量，和标识了NotNull的变量的构造方法。生成的构造方法是私有的private。（可能带参数也可能不带参数）</p>
+</li>
+</ul>
+<h3 id="4-Repository"><a href="#4-Repository" class="headerlink" title="4. @Repository"></a>4. @Repository</h3><ul>
+<li><p>通过看源代码可以发现，<code>@Controller</code>、<code>@Service</code>还是<code>@Repository</code>全部都被<code>@Component</code>注解了。在Spring源码中，注解会一级一级向上递归搜索，搜索所有的注解信息，即被以上注解注解的类在Spring看来都会包含@Component注解。综上所述，本质上<code>@Controller</code>、<code>@Service</code>、<code>@Repository</code>、<code>@Component</code>本质都是<code>@Component</code>，<strong>即Spring容器中的一个组件</strong>。</p>
+</li>
+<li><p>添加这三个注解的主要目的就是为了逻辑分层</p>
+<ul>
+<li><strong>@Repository</strong>——对应<em>数据访问</em>层Bean</li>
+<li><strong>@Service</strong>——<em>业务</em>Bean</li>
+<li><strong>@Controller</strong>——控制层（<em>展示</em>层）Bean</li>
+</ul>
+</li>
+<li><p>@Repository的功能是将数据访问层（Dao层）的类识别并标注为SpringBean，具体方式为直接在<strong>DAO类上标注</strong>即可，且只能标注在DAO类上。因为该注解的作用不只是将类识别为Bean，同时它还能将所标注的类中抛出的数据访问异常封装为 Spring 的数据访问异常类型。 Spring本身提供了一个丰富的并且是与具体的数据访问技术无关的数据访问异常结构，用于封装不同的持久层框架抛出的异常，使得异常独立于底层的框架。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//部门dao</span></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DepartmentDao</span> &#123;</span><br><span class="line">.........</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//员工dao</span></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmployeeDao</span> &#123;</span><br><span class="line">..........</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="5-配置Dao层"><a href="#5-配置Dao层" class="headerlink" title="5. 配置Dao层"></a>5. 配置Dao层</h3><h4 id="5-1-模拟数据库中的数据"><a href="#5-1-模拟数据库中的数据" class="headerlink" title="5.1 模拟数据库中的数据"></a>5.1 模拟数据库中的数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模拟数据库中的数据</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer, Department&gt; departments=<span class="literal">null</span>;</span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    departments=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;Integer, Department&gt;();  <span class="comment">//创建一个部门表</span></span><br><span class="line">    departments.put(<span class="number">101</span>,<span class="keyword">new</span> <span class="title class_">Department</span>(<span class="number">101</span>,<span class="string">&quot;教学部&quot;</span>));</span><br><span class="line">    ..............................................</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模拟数据库中的数据</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer, Employee&gt; employees=<span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//员工有所属的部门</span></span><br><span class="line"><span class="meta">@Autowired(required = false)</span></span><br><span class="line"><span class="keyword">private</span> DepartmentDao departmentDao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    employees=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;Integer, Employee&gt;();  <span class="comment">//创建一个部门表</span></span><br><span class="line">    employees.put(<span class="number">101</span>,<span class="keyword">new</span> <span class="title class_">Employee</span>(<span class="number">1001</span>,<span class="string">&quot;AA&quot;</span>,<span class="string">&quot;A123456789@qq.com&quot;</span>,<span class="number">1</span>,<span class="keyword">new</span> <span class="title class_">Department</span>(<span class="number">101</span>,<span class="string">&quot;教学部&quot;</span>)));</span><br><span class="line">    ...............................................</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2-static用法"><a href="#5-2-static用法" class="headerlink" title="5.2 static用法"></a>5.2 <code>static</code>用法</h4><ul>
+<li><p><strong>static关键字</strong>：</p>
+<ul>
+<li>在类中，用static声明的成员变量为<strong>静态成员变量</strong>，也成为<strong>类变量</strong>。类变量的生命周期和类相同，在整个应用程序执行期间都有效。</li>
+<li>static修饰的成员变量和方法，<strong>从属于类</strong>；普通变量和方法从属于对象；静态方法不能调用非静态成员，编译会报错。</li>
+<li>用途：方便在没有创建对象的情况下进行调用(方法&#x2F;变量)，被static关键字修饰的方法或者变量不需要依赖于对象来进行访问，只要类被加载了，就可以<strong>通过类名去进行访问</strong>。</li>
+</ul>
+</li>
+<li><p><strong>static方法：</strong></p>
+<ul>
+<li>static方法也成为<strong>静态方法</strong>，由于静态方法不依赖于任何对象就可以直接访问，因此对于静态方法来说，是没有this的，因为不依附于任何对象，既然都没有对象，就谈不上this了。</li>
+<li>并且由于此特性，在静态方法中不能访问类的非静态成员变量和非静态方法，因为非静态成员变量和非静态方法都必须依赖于具体的对象才能被调用。但是在非静态成员方法中是可以访问静态成员方法和静态成员变量。</li>
+</ul>
+</li>
+<li><p><strong>static变量：</strong></p>
+<ul>
+<li>称为静态变量。静态变量<strong>被所有对象共享</strong>，在内存中只有一个副本，在类初次加载的时候才会初始化。</li>
+<li>非静态变量是<strong>对象所拥有的</strong>，在创建对象的时候被初始化，存在多个副本，各个对象拥有的副本互不影响。</li>
+</ul>
+</li>
+<li><p><strong>static块：</strong></p>
+<p>静态初始化块，用于类的初始化操作，其作用就是提升程序性能。很多时候会将一些只需要进行一次的初始化操作都放在static代码块中进行。静态初始化块可以置于类中的任何地方，类中可以有多个静态初始化块。在类初次被加载时，会按照静态初始化块的顺序来执行每个块，并且只会执行一次。</p>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date birthDate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isBornBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Date</span> <span class="variable">startDate</span> <span class="operator">=</span> Date.valueOf(<span class="string">&quot;1946&quot;</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">endDate</span> <span class="operator">=</span> Date.valueOf(<span class="string">&quot;1964&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(startDate)&gt;=<span class="number">0</span> &amp;&amp; birthDate.compareTo(endDate) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>isBornBoomer是用来这个人是否是1946-1964年出生的，而每次isBornBoomer被调用的时候，都会生成startDate和birthDate两个对象，造成了空间浪费，如果改成这样效率会更好：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date birthDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Date startDate,endDate;</span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        startDate = Date.valueOf(<span class="string">&quot;1946&quot;</span>);</span><br><span class="line">        endDate = Date.valueOf(<span class="string">&quot;1964&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(Date birthDate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthDate = birthDate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isBornBoomer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> birthDate.compareTo(startDate)&gt;=<span class="number">0</span> &amp;&amp; birthDate.compareTo(endDate) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">       departments=<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;Integer, Department&gt;();  <span class="comment">//创建一个部门表</span></span><br><span class="line">       departments.put(<span class="number">101</span>,<span class="keyword">new</span> <span class="title class_">Department</span>(<span class="number">101</span>,<span class="string">&quot;教学部&quot;</span>));</span><br><span class="line">       departments.put(<span class="number">102</span>,<span class="keyword">new</span> <span class="title class_">Department</span>(<span class="number">102</span>,<span class="string">&quot;市场部&quot;</span>));</span><br><span class="line">       departments.put(<span class="number">103</span>,<span class="keyword">new</span> <span class="title class_">Department</span>(<span class="number">103</span>,<span class="string">&quot;教研部&quot;</span>));</span><br><span class="line">       departments.put(<span class="number">104</span>,<span class="keyword">new</span> <span class="title class_">Department</span>(<span class="number">104</span>,<span class="string">&quot;运营部&quot;</span>));</span><br><span class="line">       departments.put(<span class="number">105</span>,<span class="keyword">new</span> <span class="title class_">Department</span>(<span class="number">105</span>,<span class="string">&quot;后勤部&quot;</span>));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="5-3-哈希表"><a href="#5-3-哈希表" class="headerlink" title="5.3 哈希表"></a>5.3 哈希表</h4><p><code> departments = new HashMap&lt;Integer, Department&gt;();   // 创建一个部门</code></p>
+<p><code> employees = new HashMap&lt;&gt;();   // 创建一个部</code></p>
+<ul>
+<li><p><strong>什么是哈希表（Hash Table）？</strong></p>
+<ul>
+<li><p><strong>哈希方法</strong></p>
+<p>在对象的存储<strong>位置</strong>和对象的关键<strong>属性</strong>（k）之间建立一个特定的对应关系（f），使每个对象与一个唯一的存储位置相对应。在查找时，只要根据待查对象的关键属性 k 计算f(k)的值即可。如果此对象在集合中，则必定在存储位置 f(k)上，因此不需要与集合中的其他元素进行比较，一次存取便能得到所需要的记录。</p>
+</li>
+<li><p>按照哈希方法思想建立的表为哈希表！</p>
+<p>数组利于元素的查找，链表利于元素的插入和删除，而哈希表既能快速地查找又能高效地插入删除元素。哈希表是由一块<strong>地址连续的数组空间</strong>构成的，其中每个数组都是一个链表，哈希表可以被认为就是<strong>链表的数组</strong>，示意图如下：</p>
+</li>
+</ul>
+<img src="https://s3.bmp.ovh/imgs/2022/10/12/706609496e8967b6.png" style="zoom:67%;">
+
+<ul>
+<li>哈希表是一种<strong>数据结构</strong>，哈希函数是支撑哈希表的一类函数</li>
+</ul>
+</li>
+<li><p>什么是Map和HashMap？</p>
+<ul>
+<li><p><strong>Map</strong>是映射、地图的意思，在java中Map表示一种把 k <strong>映射</strong>到 v 的数据类型</p>
+</li>
+<li><p><strong>Map&lt;K, V&gt;<strong>是一个以 <strong>键值(Key)-数值(Value)</strong> 对应形式存储数据的接口。 在数组中我们是通过数组下标来对其内容索引的，而在</strong>Map</strong>中我们通过对象来对对象进行索引，用来索引的对象叫做<strong>key</strong>，其对应的对象叫做<strong>value</strong>。</p>
+</li>
+<li><p><strong>HashMap</strong>是Map&lt;K, V&gt;的实现类。(Hashtable也是Map&lt;K, V&gt;的实现类) <strong>HashMap</strong>存储数据采用哈希表结构 ，元素的存取顺序不能保证一致。但键值是唯一、不重复的。</p>
+</li>
+<li><p><strong>HashMap</strong> 的 key 与 value 类型可以相同也可以不同，可以是字符串（String）类型的 key 和 value，也可以是整型（Integer）的 key 和字符串（String）类型的 value。</p>
+<img src="https://s3.bmp.ovh/imgs/2022/10/05/a5d785054d62dd50.png" style="zoom: 67%;"></li>
+</ul>
+</li>
+<li><p>HashMap的用法</p>
+<blockquote>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://www.runoob.com/java/java-hashmap.html">Java HashMap | 菜鸟教程 (runoob.com)</a></p>
+</blockquote>
+<ul>
+<li><p><strong>添加元素</strong></p>
+<p><strong>put()方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入 HashMap 类      </span></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RunoobTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 创建 HashMap 对象 Sites</span></span><br><span class="line">        HashMap&lt;Integer, String&gt; Sites = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;Integer, String&gt;();</span><br><span class="line">        <span class="comment">// 添加键值对</span></span><br><span class="line">        Sites.put(<span class="number">1</span>, <span class="string">&quot;Google&quot;</span>);</span><br><span class="line">        Sites.put(<span class="number">2</span>, <span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">        System.out.println(Sites);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">1</span>=Google, <span class="number">2</span>=Runoob&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>创建字符串（String）类型的key和value</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入 HashMap 类      </span></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RunoobTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 创建 HashMap 对象 Sites</span></span><br><span class="line">        HashMap&lt;String, String&gt; Sites = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, String&gt;();</span><br><span class="line">        <span class="comment">// 添加键值对</span></span><br><span class="line">        Sites.put(<span class="string">&quot;one&quot;</span>, <span class="string">&quot;Google&quot;</span>);</span><br><span class="line">        Sites.put(<span class="string">&quot;two&quot;</span>, <span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">        &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;one=Google, two=Runoob&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>访问元素</strong></p>
+<p><strong>get(key)方法</strong>来获取 key 对应的 value:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">// 添加键值对</span></span><br><span class="line">      Sites.put(<span class="number">1</span>, <span class="string">&quot;Google&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">2</span>, <span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">3</span>, <span class="string">&quot;Taobao&quot;</span>); </span><br><span class="line">System.out.println(Sites.get(<span class="number">3</span>));</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Taobao</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>删除元素</strong></p>
+<p><strong>remove(key)方法</strong>来删除 key 对应的键值对(key-value)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加键值对</span></span><br><span class="line">      Sites.put(<span class="number">1</span>, <span class="string">&quot;Google&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">2</span>, <span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">3</span>, <span class="string">&quot;Taobao&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">4</span>, <span class="string">&quot;Zhihu&quot;</span>);</span><br><span class="line">      Sites.remove(<span class="number">4</span>);</span><br><span class="line">      System.out.println(Sites);</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">1</span>=Google, <span class="number">2</span>=Runoob, <span class="number">3</span>=Taobao&#125;</span><br></pre></td></tr></table></figure>
+
+<p>删除所有键值对(key-value)可以使用 <strong>clear方法</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加键值对</span></span><br><span class="line">      Sites.put(<span class="number">1</span>, <span class="string">&quot;Google&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">2</span>, <span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">3</span>, <span class="string">&quot;Taobao&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">4</span>, <span class="string">&quot;Zhihu&quot;</span>);</span><br><span class="line">      Sites.clear();</span><br><span class="line">      System.out.println(Sites);</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>计算大小</strong></p>
+<p><strong>size()方法</strong>，计算 HashMap 中的元素数量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加键值对</span></span><br><span class="line">      Sites.put(<span class="number">1</span>, <span class="string">&quot;Google&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">2</span>, <span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">3</span>, <span class="string">&quot;Taobao&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">4</span>, <span class="string">&quot;Zhihu&quot;</span>);</span><br><span class="line">      System.out.println(Sites.size());</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>迭代HashMap</strong></p>
+<p> <strong>for-each</strong> 来迭代 HashMap 中的元素</p>
+<p>如果你只想获取 key，可以使用 <strong>keySet()</strong> 方法，然后可以通过 <strong>get(key)</strong> 获取对应的 value，如果你只想获取 value，可以使用 <strong>values()</strong> 方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加键值对</span></span><br><span class="line">      Sites.put(<span class="number">1</span>, <span class="string">&quot;Google&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">2</span>, <span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">3</span>, <span class="string">&quot;Taobao&quot;</span>);</span><br><span class="line">      Sites.put(<span class="number">4</span>, <span class="string">&quot;Zhihu&quot;</span>);</span><br><span class="line">      <span class="comment">// 输出 key 和 value</span></span><br><span class="line">      <span class="keyword">for</span> (Integer i : Sites.keySet()) &#123;</span><br><span class="line">          System.out.println(<span class="string">&quot;key: &quot;</span> + i + <span class="string">&quot; value: &quot;</span> + Sites.get(i));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 返回所有 value 值</span></span><br><span class="line">      <span class="keyword">for</span>(String value: Sites.values()) &#123;</span><br><span class="line">        <span class="comment">// 输出每一个value</span></span><br><span class="line">        System.out.print(value + <span class="string">&quot;, &quot;</span>);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">key: <span class="number">1</span> value: Google</span><br><span class="line">key: <span class="number">2</span> value: Runoob</span><br><span class="line">key: <span class="number">3</span> value: Taobao</span><br><span class="line">key: <span class="number">4</span> value: Zhihu</span><br><span class="line">Google, Runoob, Taobao, Zhihu,</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="6-ViewControllerRegistry和addViewController（首页实现）"><a href="#6-ViewControllerRegistry和addViewController（首页实现）" class="headerlink" title="6. ViewControllerRegistry和addViewController（首页实现）"></a>6. ViewControllerRegistry和addViewController（首页实现）</h3><p><strong>ViewControllerRegistry</strong> 创建简单的<strong>路由</strong>。</p>
+<p>在项目开发过程中，经常会涉及页面跳转问题，而且这个页面跳转没有任何业务逻辑过程，只是单纯的路由过程 ( 点击一个按钮跳转到一个页面 ) 。Spring MVC 中提供了一个方法，可以把类似代码统一管理，减少类似代码的书写（根据项目要求，或者代码规范，不一定非要统一管理页面跳转，有时会把相同业务逻辑的代码放在一个类中）。</p>
+<p>常规写法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(&quot;/toview&quot;)</span></span><br><span class="line"> <span class="keyword">public</span> String <span class="title function_">view</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;view&quot;</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p> 在继承<code>WebMvcConfigurerAdapter</code>的<code>DemoMVCConfig</code>类中重载<code>addViewControllers</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addViewControllers</span><span class="params">(ViewControllerRegistry registry)</span> &#123;</span><br><span class="line">    registry.addViewController(<span class="string">&quot;/toview&quot;</span>).setViewName(<span class="string">&quot;/view&quot;</span>);</span><br><span class="line">    <span class="comment">//添加更多</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>addViewController</strong></p>
+<p>当项目中涉及大量的页面跳转，我们可以使用addViewControllers方法实现<strong>无业务逻辑跳转，从而减少控制器代码的编写。</strong>addViewControllers方法可以实现将<strong>一个请求直接映射为视图</strong>，不需要编写控制器来实现，从而简化了页面跳转。</p>
+<h3 id="7-页面国际化"><a href="#7-页面国际化" class="headerlink" title="7. 页面国际化"></a>7. 页面国际化</h3><p><code>public Locale resolveLocale(HttpServletRequest request) &#123;。。。&#125;</code></p>
+<h4 id="7-1-Locale"><a href="#7-1-Locale" class="headerlink" title="7.1 Locale"></a>7.1 Locale</h4><p><code> Locale locale = Locale.getDefault(); // 如果没有获取到就使用系统默认的,获得此Java虚拟机当前线程默认的语言环境值</code></p>
+<p><strong>Locale</strong>对象表示了一个特定的地理，政治或文化区域。需要使用到<strong>Locale</strong>执行其任务的操作称为<strong>区域设置敏感</strong>，并使用<strong>Locale</strong>为用户定制信息。</p>
+<p>获取当前Java虚拟机线程默认的国家和语言信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">country</span> <span class="operator">=</span> defaultLocale.getCountry();<span class="comment">//返回国家地区代码</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">language</span> <span class="operator">=</span> defaultLocale.getLanguage();<span class="comment">//返回国家的语言</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">displayCountry</span> <span class="operator">=</span> defaultLocale.getDisplayCountry();<span class="comment">//返回适合向用户显示的国家信息</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">displayLanaguage</span> <span class="operator">=</span> defaultLocale.getDisplayLanaguage();<span class="comment">//返回适合向用户展示的语言信息</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">displayName</span> <span class="operator">=</span> defaultLocale.getDisplayName();<span class="comment">//返回适合向用户展示的语言环境名</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>若当前Java虚拟机线程所处的操作系统的区域语言设置为“中文（简体，中国）”，则上边的运行结果将会是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CN</span><br><span class="line"></span><br><span class="line">zh</span><br><span class="line"></span><br><span class="line">中国</span><br><span class="line"></span><br><span class="line">中文</span><br><span class="line"></span><br><span class="line">中文（中国）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>使用ResourceBundle读取国际化资源文件</strong></p>
+<p>ResourceBundle资源包包含特定语言环境的对象。使用其可以加载并读取语言环境资源</p>
+<ul>
+<li>轻松的本地化或者翻译成不同的语言</li>
+<li>一次处理多个语言环境</li>
+<li>以后可以轻松的进行修改，一遍支持更多的语言环境</li>
+</ul>
+</li>
+</ul>
+<h4 id="7-2-HttpServletRequest-和HttpServletResponse"><a href="#7-2-HttpServletRequest-和HttpServletResponse" class="headerlink" title="7.2 HttpServletRequest 和HttpServletResponse"></a>7.2 HttpServletRequest 和HttpServletResponse</h4><p>Servlet 处理 HTTP 请求的流程如下：</p>
+<p><img src="https://s3.bmp.ovh/imgs/2022/10/16/d59b962a33f7b4c5.png"></p>
+<blockquote>
+<ol>
+<li>Servlet 容器接收到来自客户端的 HTTP 请求后，容器会针对该请求分别创建一个 HttpServletRequest 对象和 HttpServletReponse 对象。</li>
+<li>容器将 HttpServletRequest 对象和 HttpServletReponse 对象以参数的形式传入 service() 方法内，并调用该方法。</li>
+<li>在 service() 方法中 Servlet 通过 HttpServletRequest 对象获取客户端信息以及请求的相关信息。</li>
+<li>对 HTTP 请求进行处理。</li>
+<li>请求处理完成后，将响应信息封装到 HttpServletReponse 对象中。</li>
+<li>Servlet 容器将响应信息返回给客户端。</li>
+<li>当 Servlet 容器将响应信息返回给客户端后，HttpServletRequest 对象和 HttpServletReponse 对象被销毁。</li>
+</ol>
+</blockquote>
+<p>通过以上流程可以看出， HttpServletRequest 和 HttpServletReponse 是 Servlet 处理 HTTP 请求流程中最重要的两个对象。<strong>HttpServletRequest 对象用于封装 HTTP 请求信息，HttpServletReponse 对象用于封装 HTTP 响应信息。</strong></p>
+<h4 id="7-3-request-getParameter-“l”"><a href="#7-3-request-getParameter-“l”" class="headerlink" title="7.3 request.getParameter(“l”);"></a>7.3 request.getParameter(“l”);</h4><h4 id="7-4-StringUtils"><a href="#7-4-StringUtils" class="headerlink" title="7.4 StringUtils"></a>7.4 StringUtils</h4><h3 id="8-什么时候用setXX-，什么时候用getXX-？什么时候用-RequestMapping-，什么时候用-PostMapping-，什么时候用-GetMapping-？"><a href="#8-什么时候用setXX-，什么时候用getXX-？什么时候用-RequestMapping-，什么时候用-PostMapping-，什么时候用-GetMapping-？" class="headerlink" title="8.什么时候用setXX()，什么时候用getXX()？什么时候用@RequestMapping()，什么时候用@PostMapping()，什么时候用@GetMapping()？"></a>8.什么时候用setXX()，什么时候用getXX()？什么时候用@RequestMapping()，什么时候用@PostMapping()，什么时候用@GetMapping()？</h3><h3 id="9-Model-model"><a href="#9-Model-model" class="headerlink" title="9. Model model"></a>9. Model model</h3><h3 id="10-HttpSession"><a href="#10-HttpSession" class="headerlink" title="10. HttpSession"></a>10. HttpSession</h3><p><code> session.invalidate();</code></p>
+<h3 id="11-request-getRequestDispatcher-“-x2F-index-html”-forward-request-response"><a href="#11-request-getRequestDispatcher-“-x2F-index-html”-forward-request-response" class="headerlink" title="11.request.getRequestDispatcher(“&#x2F;index.html”).forward(request,response);"></a>11.request.getRequestDispatcher(“&#x2F;index.html”).forward(request,response);</h3>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/09/30/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%E2%80%94%E2%80%94Web%E5%BC%80%E5%8F%91%EF%BC%9A%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-10-05 20:51:06
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Springboot/" title="Springboot">
+                        <b>#</b> Springboot
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Java/" title="Java">
+                        <b>#</b> Java
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/10/17/%E8%87%AA%E5%B7%B1%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%EF%BC%9F/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Map%E9%9B%86%E5%90%88%E3%80%81Collection%E4%B8%AD%E7%9A%84%E9%9B%86%E5%90%88%E4%B8%8EList%E9%9B%86%E5%90%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1. Map集合、Collection中的集合与List集合的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-List%EF%BC%9CT%EF%BC%9E-%E3%80%81List%EF%BC%9C-%EF%BC%9E%E3%80%81List%EF%BC%9CObject%EF%BC%9E%E3%80%81List%EF%BC%9CE%EF%BC%9E%E3%80%81List%EF%BC%9CU%EF%BC%9E%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2. List＜T＞ 、List＜?＞、List＜Object＞、List＜E＞、List＜U＞的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-AllArgsConstructor%E5%92%8C-NoArgsConstructor"><span class="toc-text">3. @AllArgsConstructor和@NoArgsConstructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Repository"><span class="toc-text">4. @Repository</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AEDao%E5%B1%82"><span class="toc-text">5. 配置Dao层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">5.1 模拟数据库中的数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-static%E7%94%A8%E6%B3%95"><span class="toc-text">5.2 static用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-text">5.3 哈希表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-ViewControllerRegistry%E5%92%8CaddViewController%EF%BC%88%E9%A6%96%E9%A1%B5%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-text">6. ViewControllerRegistry和addViewController（首页实现）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E9%A1%B5%E9%9D%A2%E5%9B%BD%E9%99%85%E5%8C%96"><span class="toc-text">7. 页面国际化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-Locale"><span class="toc-text">7.1 Locale</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-HttpServletRequest-%E5%92%8CHttpServletResponse"><span class="toc-text">7.2 HttpServletRequest 和HttpServletResponse</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-request-getParameter-%E2%80%9Cl%E2%80%9D"><span class="toc-text">7.3 request.getParameter(“l”);</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-4-StringUtils"><span class="toc-text">7.4 StringUtils</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8setXX-%EF%BC%8C%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8getXX-%EF%BC%9F%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8-RequestMapping-%EF%BC%8C%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8-PostMapping-%EF%BC%8C%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8-GetMapping-%EF%BC%9F"><span class="toc-text">8.什么时候用setXX()，什么时候用getXX()？什么时候用@RequestMapping()，什么时候用@PostMapping()，什么时候用@GetMapping()？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Model-model"><span class="toc-text">9. Model model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-HttpSession"><span class="toc-text">10. HttpSession</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-request-getRequestDispatcher-%E2%80%9C-x2F-index-html%E2%80%9D-forward-request-response"><span class="toc-text">11.request.getRequestDispatcher(“&#x2F;index.html”).forward(request,response);</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

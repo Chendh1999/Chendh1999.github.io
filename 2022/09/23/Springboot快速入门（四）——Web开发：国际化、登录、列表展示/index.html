@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Springboot快速入门（四）——Web开发：国际化/登录/注销 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Springboot快速入门（四）——Web开发：国际化/登录/注销</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-09-23 11:07:27
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Springboot/" title="Springboot">
+                    <b>#</b> Springboot
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Java/" title="Java">
+                    <b>#</b> Java
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="1-页面国际化"><a href="#1-页面国际化" class="headerlink" title="1. 页面国际化"></a>1. 页面国际化</h2><h3 id="1-1-配置文件编写"><a href="#1-1-配置文件编写" class="headerlink" title="1.1 配置文件编写"></a>1.1 配置文件编写</h3><ul>
+<li><p>resources资源文件下新建一个<strong>i18n目录</strong>，存放国际化配置文件</p>
+</li>
+<li><p>建立一个<strong>login.properties</strong>文件，一个<strong>login_zh_CN.properties</strong>，还有一个<strong>login_en_US.properties</strong>；</p>
+<p><img src="https://img-blog.csdnimg.cn/829f3e8f6a524f2a99b7eb984357749c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5p2o5LiZ5a-F,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li><p>编写配置</p>
+<ul>
+<li><p>login.properties ： 默认</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">login.btn=登录</span><br><span class="line">login.password=密码</span><br><span class="line">login.remember=记住我</span><br><span class="line">login.tip=请登录</span><br><span class="line">login.username=用户名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>英文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">login.btn=Sign in</span><br><span class="line">login.password=Password</span><br><span class="line">login.remember=Remember me</span><br><span class="line">login.tip=Please sign in</span><br><span class="line">login.username=Username</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>中文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">login.btn=登录</span><br><span class="line">login.password=密码</span><br><span class="line">login.remember=记住我</span><br><span class="line">login.tip=请登录</span><br><span class="line">login.username=用户名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>配置页面国际化值</p>
+<p><img src="https://img-blog.csdnimg.cn/94ae3202a9e34bdd82f10cec0bff1290.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5p2o5LiZ5a-F,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述"></p>
+</li>
+</ul>
+<h3 id="1-2-配置生效"><a href="#1-2-配置生效" class="headerlink" title="1.2 配置生效"></a>1.2 配置生效</h3><ul>
+<li><p>点击链接让个人的国际化资源生效，就需要让我们自己的<strong>Locale</strong>生效！ 需要去自己写一个自己的<strong>LocaleResolver</strong>，可以在链接上携带区域信息</p>
+<ul>
+<li><p>修改前端页面的跳转</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 这里传入参数不需要使用 ？ 使用 （key=value）--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-sm&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/index.html(l=&#x27;zh_CN&#x27;)&#125;&quot;</span>&gt;</span>中文<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;btn btn-sm&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/index.html(l=&#x27;en_US&#x27;)&#125;&quot;</span>&gt;</span>English<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写一个处理的组件类（在config文件夹下）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 可以在链接上携带区域信息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyLocaleResolver</span> <span class="keyword">implements</span> <span class="title class_">LocaleResolver</span> &#123;</span><br><span class="line">    <span class="comment">// 解析请求</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Locale <span class="title function_">resolveLocale</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">language</span> <span class="operator">=</span> request.getParameter(<span class="string">&quot;l&quot;</span>);</span><br><span class="line">        <span class="type">Locale</span> <span class="variable">locale</span> <span class="operator">=</span> Locale.getDefault(); <span class="comment">// 如果没有获取到就使用系统默认的</span></span><br><span class="line">        <span class="comment">// 如果请求链接不为空</span></span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.isEmpty(language)) &#123;</span><br><span class="line">            <span class="comment">// 分割请求参数</span></span><br><span class="line">            String[] split = language.split(<span class="string">&quot;_&quot;</span>);</span><br><span class="line">            <span class="comment">// 国家，地区</span></span><br><span class="line">            locale = <span class="keyword">new</span> <span class="title class_">Locale</span>(split[<span class="number">0</span>], split[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> locale;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setLocale</span><span class="params">(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Locale locale)</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为了让区域化信息能够生效，需要再配置一下这个组件！在个人的MvcConofig下添加 bean；（在MyMvcConfig中）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> LocaleResolver <span class="title function_">localeResolver</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MyLocaleResolver</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-登录功能实现"><a href="#2-登录功能实现" class="headerlink" title="2. 登录功能实现"></a>2. 登录功能实现</h2><h3 id="2-1-登录"><a href="#2-1-登录" class="headerlink" title="2.1 登录"></a>2.1 登录</h3><ul>
+<li><p>登录的html页面提交地址，并且所有的表单标签都需要加上一个name属性</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;form-signin&quot;</span> <span class="attr">th:action</span>=<span class="string">&quot;@&#123;/user/login&#125;&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">·············</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写LoginController </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoginController</span> &#123;</span><br><span class="line">    <span class="meta">@PostMapping(&quot;/user/login&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">login</span><span class="params">(<span class="meta">@RequestParam(&quot;username&quot;)</span> String username,</span></span><br><span class="line"><span class="params">                        <span class="meta">@RequestParam(&quot;password&quot;)</span> String password,</span></span><br><span class="line"><span class="params">                        Model model, HttpSession session)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.isEmpty(username) &amp;&amp; <span class="string">&quot;123456&quot;</span>.equals(password))&#123;</span><br><span class="line">            <span class="comment">// 登录成功！将用户信息放入session</span></span><br><span class="line">            session.setAttribute(<span class="string">&quot;loginUser&quot;</span>,username);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;dashboard&quot;</span>; <span class="comment">// 跳转到首页</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 登录失败！存放错误信息</span></span><br><span class="line">            model.addAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;用户名密码错误&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;index&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录失败的话，需要将后台信息输出到前台，可以在首页标题下面加上判断！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--判断是否显示，使用if, $&#123;&#125;可以使用工具类，可以看thymeleaf的中文文档--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;color: red&quot;</span> <span class="attr">th:text</span>=<span class="string">&quot;$&#123;msg&#125;&quot;</span> <span class="attr">th:if</span>=<span class="string">&quot;$&#123;not #strings.isEmpty(msg)&#125;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录成功后，由于是转发，链接不变，可以<strong>重定向到首页</strong></p>
+<ul>
+<li><p>再添加一个视图控制映射，在自己的<strong>MyMvcConfig</strong>中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">registry.addViewController(<span class="string">&quot;/main.html&quot;</span>).setViewName(<span class="string">&quot;dashboard&quot;</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将 LoginController 的代码改为重定向</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//登录成功！防止表单重复提交，我们重定向</span></span><br><span class="line"><span class="keyword">return</span> <span class="string">&quot;redirect:/main.html&quot;</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-登录拦截器"><a href="#2-2-登录拦截器" class="headerlink" title="2.2 登录拦截器"></a>2.2 登录拦截器</h3><ul>
+<li><p>自定义拦截器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoginHandlerInterceptor</span> <span class="keyword">implements</span> <span class="title class_">HandlerInterceptor</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">//获取loginUser信息进行判断</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">user</span> <span class="operator">=</span> request.getSession().getAttribute(<span class="string">&quot;loginUser&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(user==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="comment">//未登录，返回首页</span></span><br><span class="line">            request.setAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;没有权限，请登录账户&quot;</span>);</span><br><span class="line">            request.getRequestDispatcher(<span class="string">&quot;/index.html&quot;</span>).forward(request,response);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//登录，放行</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将拦截器注册到SpringMVC配置类当中——MyMVCConfig.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">    <span class="comment">// 注册拦截器，及拦截请求和要剔除哪些请求!</span></span><br><span class="line">    <span class="comment">// 还需要过滤静态资源文件，否则样式显示不出来</span></span><br><span class="line">    registry.addInterceptor(<span class="keyword">new</span> <span class="title class_">LoginHandlerInterceptor</span>())</span><br><span class="line">        .addPathPatterns(<span class="string">&quot;/**&quot;</span>)</span><br><span class="line">        .excludePathPatterns(<span class="string">&quot;/index.html&quot;</span>,<span class="string">&quot;/&quot;</span>,<span class="string">&quot;/user/login&quot;</span>,<span class="string">&quot;/static/**&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-注销页面"><a href="#3-注销页面" class="headerlink" title="3 注销页面"></a>3 注销页面</h2><h3 id="3-1-修改前端界面"><a href="#3-1-修改前端界面" class="headerlink" title="3.1 修改前端界面"></a>3.1 修改前端界面</h3><blockquote>
+<p>在提取出来的公共<code>commons</code>页面，顶部导航栏处的标签添加<code>href</code>属性，实现点击发起请求<code>user/logOut</code></p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;nav-link&quot;</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;/user/loginOut&#125;&quot;</span>&gt;</span>Sign out<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-修改后端界面"><a href="#3-2-修改后端界面" class="headerlink" title="3.2 修改后端界面"></a>3.2 修改后端界面</h3><h5 id="LoginController-java文件"><a href="#LoginController-java文件" class="headerlink" title="LoginController.java文件"></a>LoginController.java文件</h5><blockquote>
+<p>处理点击<code>注销</code>标签的请求，在<code>LoginController</code>中编写对应的方法，清除session，并重定向到首页</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(&quot;/user/loginOut&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">logout</span><span class="params">(HttpSession session)</span> &#123;</span><br><span class="line">    session.invalidate();</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;redirect:/index.html&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/09/14/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Web%E5%BC%80%E5%8F%91%EF%BC%9A%E9%A6%96%E9%A1%B5%E5%AE%9E%E7%8E%B0/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-09-23 11:07:27
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Springboot/" title="Springboot">
+                        <b>#</b> Springboot
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Java/" title="Java">
+                        <b>#</b> Java
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/09/27/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94Debug%EF%BC%9A%E5%A2%9E%E5%8A%A0%E5%91%98%E5%B7%A5/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A1%B5%E9%9D%A2%E5%9B%BD%E9%99%85%E5%8C%96"><span class="toc-text">1. 页面国际化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99"><span class="toc-text">1.1 配置文件编写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E9%85%8D%E7%BD%AE%E7%94%9F%E6%95%88"><span class="toc-text">1.2 配置生效</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-text">2. 登录功能实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%99%BB%E5%BD%95"><span class="toc-text">2.1 登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">2.2 登录拦截器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B3%A8%E9%94%80%E9%A1%B5%E9%9D%A2"><span class="toc-text">3 注销页面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BF%AE%E6%94%B9%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2"><span class="toc-text">3.1 修改前端界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BF%AE%E6%94%B9%E5%90%8E%E7%AB%AF%E7%95%8C%E9%9D%A2"><span class="toc-text">3.2 修改后端界面</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#LoginController-java%E6%96%87%E4%BB%B6"><span class="toc-text">LoginController.java文件</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

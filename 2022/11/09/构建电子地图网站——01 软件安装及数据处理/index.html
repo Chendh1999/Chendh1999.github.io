@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      构建电子地图网站——01 软件安装及数据处理 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">构建电子地图网站——01 软件安装及数据处理</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-11-09 14:57:23
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/GIS/" title="GIS">
+                    <b>#</b> GIS
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/PostSQL/" title="PostSQL">
+                    <b>#</b> PostSQL
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/PostGIS/" title="PostGIS">
+                    <b>#</b> PostGIS
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <blockquote>
+<p>最近在搜索关于GIS的项目时，在知乎看到了一个构建电子地图网站的教程，里面运用到的QGIS、python语言是之前未接触到的，觉得比较新颖，接下来准备用几天的时间按照教程来实现网站功能，希望能有所收获，这也算是一次小小的实践经验！</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/145423630">从零开始，构建电子地图网站—-索引目录 - 知乎 (zhihu.com)</a></p>
+</blockquote>
+<h2 id="1-需要用到的软件"><a href="#1-需要用到的软件" class="headerlink" title="1. 需要用到的软件"></a>1. 需要用到的软件</h2><blockquote>
+<p>后端开发软件：IntelliJ IDEA，语言JAVA。</p>
+<p>数据处理软件：pyCharm，语言python。（试试用vscode替代）</p>
+<p>前端开发软件：sublime，语言JavaScript。（试试用vscode替代）</p>
+<p>数据库：PostgreSQL+PostGIS，语言SQL。</p>
+<p>数据查看软件：QGIS。</p>
+<p>浏览器：谷歌chrome</p>
+</blockquote>
+<p>新安装了QGIS、PostgreSQL、PostGIS、Navicat Premium</p>
+<h3 id="1-1-安装QGIS（易）"><a href="#1-1-安装QGIS（易）" class="headerlink" title="1.1 安装QGIS（易）"></a>1.1 安装QGIS（易）</h3><p>这个软件开源且安装简单，相比ArcGIS的各种破解，这个软件是真滴良心！直接从官网下载好电脑对应的版本，之后就是傻瓜的“下一步”式安装了！安装好了之后在“XYZ Tiles”下可以添加在线地图，百度搜索“瓦片地图”对应地图的url添加进去就ok 了！</p>
+<h3 id="1-2-安装PostgreSQL-PostGIS-Navicat-Premium"><a href="#1-2-安装PostgreSQL-PostGIS-Navicat-Premium" class="headerlink" title="1.2 安装PostgreSQL+PostGIS+Navicat Premium"></a>1.2 安装PostgreSQL+PostGIS+Navicat Premium</h3><blockquote>
+<p><strong>特别注意：PostGIS的安装必须在PostgreSQL安装好之后再进行安装！！！两个的版本要对应，推荐安装稍微低一点的版本，高版本易出错，推荐PostgreSQL12+postgis3.0.x+Navicat Premium16</strong></p>
+<p><strong>Navicat Premium的版本和</strong></p>
+</blockquote>
+<ul>
+<li><p>安装PostgreSQL（较易）</p>
+<ul>
+<li><p>下载电脑对应版本的软件</p>
+<blockquote>
+<p> 注：PostGIS的版本要与PostgreSQL版本一致，所以，<strong>不推荐下载高版本的</strong>。最开始我下载的PostgreSQL15，安装了对应的PostgreSQL版本之后，PostgreSQL中是有根据PostGIS新建的数据库，但是PostgreGIS一直打不开，报错：找不到xxxxx.dll文件</p>
+<p><strong>推荐下载PostgreSQL12</strong></p>
+</blockquote>
+</li>
+<li><p>安装过程要设置密码和端口号，端口号默认就行</p>
+</li>
+</ul>
+</li>
+<li><p>安装PostgreGIS（较易）</p>
+<ul>
+<li><p>下载与PostgreSQL对应的版本</p>
+<p>可以去官网或者一些网站下载，也可以直接在PostgreSQL安装路径下的“<strong>Application Stack Builder</strong>”中下载（更推荐后者的下载方式，可以直接选择下载对应的版本，但是这根据网上的说法好像要网不卡）</p>
+</li>
+<li><p>安装路径要和PostgreSQL的安装路径一样</p>
+</li>
+<li><p>输入在PostgreSQL安装时设置的username和password，还有端口号</p>
+</li>
+<li><p>弹出来的弹窗都选择“是”，这是自动设置了环境变量</p>
+</li>
+</ul>
+</li>
+<li><p>安装Navicat Premium（要破解）</p>
+<blockquote>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/492364793">Navicat 16 最新版Windows安装与永久激活教程 - 知乎 (zhihu.com)</a></p>
+</blockquote>
+<p>Navicat的版本可以下载高版本的，当版本较低，而PostSQL版本较高时会连接报错！Navicat的版本应比PostSQL的版本高！</p>
+</li>
+</ul>
+<h3 id="1-3-安装PyCharm"><a href="#1-3-安装PyCharm" class="headerlink" title="1.3 安装PyCharm"></a>1.3 安装PyCharm</h3><p>  我是直接通过联想的电脑管家直接进行傻瓜式安装</p>
+<h2 id="2-数据处理——PostGIS"><a href="#2-数据处理——PostGIS" class="headerlink" title="2 数据处理——PostGIS"></a>2 数据处理——PostGIS</h2><h3 id="2-1-数据来源"><a href="#2-1-数据来源" class="headerlink" title="2.1 数据来源"></a>2.1 数据来源</h3><p>China Historical GIS（<a target="_blank" rel="noopener" href="https://chgis.fairbank.fas.harvard.edu/">CHGIS (harvard.edu)</a>）</p>
+<p>  里面的数据包含基于wgs84的utf和gbk两种不同的编码，包含：历史行政区划点，到县一级；历史行政区划点，到州一级；历史政区面</p>
+<h3 id="2-2-数据入库"><a href="#2-2-数据入库" class="headerlink" title="2.2 数据入库"></a>2.2 数据入库</h3><ul>
+<li><p>navicat连接pg库</p>
+</li>
+<li><p>空间扩展</p>
+<ul>
+<li><p>navicat打开数据库postgres，这就是初始化的数据库</p>
+</li>
+<li><p>新建查询，执行<code>CREATE EXTENSION postgis</code>，为数据库添加空间扩展，会发现数据库中多了一表<code>spatial_ref_sys</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-PostGIS工具上传shp"><a href="#2-3-PostGIS工具上传shp" class="headerlink" title="2.3 PostGIS工具上传shp"></a>2.3 PostGIS工具上传shp</h3><p>把utf8编码格式、wgs84坐标系的文件上传数据库，因为数据库一般都是utf-8编码的</p>
+<ul>
+<li>打开<strong>PostGIS Shapefile Import&#x2F;Export Manager</strong></li>
+<li><strong>View connection details</strong>连接PostSQL</li>
+<li><strong>Add File</strong>上传shp文件再<strong>Import</strong>一下</li>
+</ul>
+<h2 id="3-查看数据"><a href="#3-查看数据" class="headerlink" title="3 查看数据"></a>3 查看数据</h2><h3 id="3-1-QGIS查看pg库中的数据"><a href="#3-1-QGIS查看pg库中的数据" class="headerlink" title="3.1 QGIS查看pg库中的数据"></a>3.1 QGIS查看pg库中的数据</h3><ul>
+<li><p>QGIS添加一个地图瓦片</p>
+<p>Browser——XYZ Tiles——右键——New Connection，打开 XYZ Connection——把url粘贴进去</p>
+</li>
+<li><p>QGIS连接PostSQL并把shp数据加载进去</p>
+<p>打开Data Source Manger，选择Vector，选择Database，下拉选择PostgreSQL，选择new，输入Connection Information，输入User name和Password，勾选store，Test Connection，显示连接成功，ok，ok，add</p>
+</li>
+</ul>
+<h3 id="3-2-用Sql语法查看"><a href="#3-2-用Sql语法查看" class="headerlink" title="3.2 用Sql语法查看"></a>3.2 用Sql语法查看</h3><ul>
+<li><p>打开Navicat</p>
+</li>
+<li><p>新建查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> st_astext(geom) <span class="keyword">FROM</span> v6_time_cnty_pts_utf_wgs84 LIMIT <span class="number">1</span>;</span><br><span class="line"><span class="keyword">SELECT</span> st_astext(geom) <span class="keyword">FROM</span> v6_time_pref_pgn_utf_wgs84 LIMIT <span class="number">1</span>;</span><br><span class="line"><span class="keyword">SELECT</span> st_astext(geom) <span class="keyword">FROM</span> v6_time_pref_pts_utf_wgs84 LIMIT <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>查询结果一：POINT(111.079483 39.012409)</p>
+<p>查询结果二：MULTIPOLYGON(((113.549411712145 36.7545434898289,113.543285553768 36.7521524539279,113.560044728209 36.7134634435762,113.55651873219 36.7287158304727,113.552914744172 36.7456842597138,113.549411712145 36.7545434898289)))</p>
+<p>查询结果三：POINT(111.076347 39.017826)</p>
+</li>
+</ul>
+<h2 id="4-数据处理——Python"><a href="#4-数据处理——Python" class="headerlink" title="4 数据处理——Python"></a>4 数据处理——Python</h2><blockquote>
+<p>用PostGIS可以很简单的就上传shp文件，但是由于导入shp文件没有字段备注和表说明，且如果字段名过长，还会截短字段名。所以为了规范化，用py脚本把数据读入PostgreSQL数据库中。</p>
+</blockquote>
+<h3 id="4-1-环境搭建"><a href="#4-1-环境搭建" class="headerlink" title="4.1 环境搭建"></a>4.1 环境搭建</h3><blockquote>
+<p>Python需要3个库包：gdal、shapely、psycopg2</p>
+</blockquote>
+<p>这3个库包可以进入cmd利用命令行进行安装</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pip install gdal</span><br><span class="line"></span><br><span class="line">pip install shapely</span><br><span class="line"></span><br><span class="line">pip install psycopg2</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-Python读取shp文件"><a href="#4-2-Python读取shp文件" class="headerlink" title="4.2 Python读取shp文件"></a>4.2 Python读取shp文件</h3><blockquote>
+<p><strong>读shp文件，并返回一个list方法，再把list写入一个文本txt中</strong></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=gbk</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> osgeo <span class="keyword">import</span> gdal</span><br><span class="line">    <span class="keyword">from</span> osgeo <span class="keyword">import</span> ogr</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">import</span> gdal</span><br><span class="line">    <span class="keyword">import</span> ogr</span><br><span class="line"><span class="comment"># pathStr,shp文件的全路径</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ReadVectorFile</span>(<span class="params">pathStr</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回结果是一个list</span></span><br><span class="line">    result=[]</span><br><span class="line">    <span class="comment"># 支持中文路径</span></span><br><span class="line">    gdal.SetConfigOption(<span class="string">&quot;GDAL_FILENAME_IS_UTF8&quot;</span>, <span class="string">&quot;NO&quot;</span>)</span><br><span class="line">    <span class="comment"># 属性表字段支持中文</span></span><br><span class="line">    gdal.SetConfigOption(<span class="string">&quot;SHAPE_ENCODING&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    strVectorFile = pathStr</span><br><span class="line">    <span class="comment"># 注册所有的驱动</span></span><br><span class="line">    ogr.RegisterAll()</span><br><span class="line">    <span class="comment"># 打开数据</span></span><br><span class="line">    ds = ogr.Open(strVectorFile, <span class="number">0</span>)</span><br><span class="line">    <span class="comment"># 获取该数据源中的图层个数，一般shp数据图层只有一个，如果是mdb、dxf等图层就会有多个</span></span><br><span class="line">    iLayerCount = ds.GetLayerCount()</span><br><span class="line">    <span class="comment"># 获取第一个图层</span></span><br><span class="line">    oLayer = ds.GetLayerByIndex(<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># 对图层进行初始化</span></span><br><span class="line">    oLayer.ResetReading()</span><br><span class="line">    <span class="comment"># 获取图层中的属性表表头并输出,可以定义建表语句</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;属性表结构信息：&quot;</span>)</span><br><span class="line">    oDefn = oLayer.GetLayerDefn()</span><br><span class="line">    iFieldCount = oDefn.GetFieldCount()</span><br><span class="line">    <span class="keyword">for</span> iAttr <span class="keyword">in</span> <span class="built_in">range</span>(iFieldCount):</span><br><span class="line">        oField = oDefn.GetFieldDefn(iAttr)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s: %s(%d.%d)&quot;</span> % ( \</span><br><span class="line">     \</span><br><span class="line">            oField.GetNameRef(), \</span><br><span class="line">     \</span><br><span class="line">            oField.GetFieldTypeName(oField.GetType()), \</span><br><span class="line">     \</span><br><span class="line">            oField.GetWidth(), \</span><br><span class="line">     \</span><br><span class="line">            oField.GetPrecision()))</span><br><span class="line">    <span class="comment"># 输出图层中的要素个数</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;要素个数 = &quot;</span>, oLayer.GetFeatureCount(<span class="number">0</span>))</span><br><span class="line">    oFeature = oLayer.GetNextFeature()</span><br><span class="line">    <span class="comment"># 下面开始遍历图层中的要素，将对象都作为string输出</span></span><br><span class="line">    <span class="keyword">while</span> oFeature <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># 获取要素中的属性表内容</span></span><br><span class="line">        lineStr=[]</span><br><span class="line">        <span class="keyword">for</span> iField <span class="keyword">in</span> <span class="built_in">range</span>(iFieldCount):</span><br><span class="line">            lineStr.append(oFeature.GetFieldAsString(iField))</span><br><span class="line">    <span class="comment"># 获取要素中的几何体</span></span><br><span class="line">        oGeometry = oFeature.GetGeometryRef()</span><br><span class="line">        lineStr.append(<span class="built_in">str</span>(oGeometry))</span><br><span class="line">        <span class="comment"># print(lineStr)</span></span><br><span class="line">        result.append(lineStr)</span><br><span class="line">        <span class="comment"># 循环</span></span><br><span class="line">        oFeature = oLayer.GetNextFeature()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;数据集关闭！&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    result=ReadVectorFile(  <span class="string">r&#x27;E:\develop_gis\map website\data\V6 Time Series County Points\v6_time_cnty_pts_utf_wgs84\v6_time_cnty_pts_utf_wgs84.shp&#x27;</span>)</span><br><span class="line">    f_new = <span class="built_in">open</span>(</span><br><span class="line">        <span class="string">r&#x27;E:\develop_gis\map website\data\V6 Time Series County Points\v6_time_cnty_pts_utf_wgs84\v6_time_cnty_pts_utf_wgs84.txt&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;a&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> result:</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> r:</span><br><span class="line">            f_new.write(p + <span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">        f_new.write(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    f_new.close()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-PostSQL数据库中建表"><a href="#4-3-PostSQL数据库中建表" class="headerlink" title="4.3 PostSQL数据库中建表"></a>4.3 PostSQL数据库中建表</h3><blockquote>
+<p>直接将之前shp生成的txt文件作为源，写入数据库！进行两个步骤的操作：<strong>① 建表；② 插入</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>建表</strong></p>
+<p>建表的时候最好加上<strong>字段说明</strong>，顺便可以再加上索引</p>
+<ul>
+<li><em>public. v6_time_cnty_pts_utf_wgs84表</em></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> public. v6_time_cnty_pts_utf_wgs84(</span><br><span class="line">  gid SERIAL8 <span class="keyword">PRIMARY</span> KEY <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  name_py <span class="type">varchar</span>(<span class="number">40</span>),</span><br><span class="line">  name_ch <span class="type">varchar</span>(<span class="number">45</span>),</span><br><span class="line">  name_ft <span class="type">varchar</span>(<span class="number">45</span>),</span><br><span class="line">  x_coor float8,</span><br><span class="line">  y_coor float8,</span><br><span class="line">  pres_loc <span class="type">varchar</span>(<span class="number">60</span>),</span><br><span class="line">  type_py <span class="type">varchar</span>(<span class="number">15</span>),</span><br><span class="line">  type_ch <span class="type">varchar</span>(<span class="number">15</span>),</span><br><span class="line">  lev_rank <span class="type">varchar</span>(<span class="number">1</span>),</span><br><span class="line">  beg_yr int8,</span><br><span class="line">  beg_rule <span class="type">varchar</span>(<span class="number">1</span>),</span><br><span class="line">  end_yr int8,</span><br><span class="line">  end_rule <span class="type">varchar</span>(<span class="number">1</span>),</span><br><span class="line">  note_id int8,</span><br><span class="line">  obj_type <span class="type">varchar</span>(<span class="number">7</span>),</span><br><span class="line">  sys_id int8,</span><br><span class="line">  geo_src <span class="type">varchar</span>(<span class="number">10</span>),</span><br><span class="line">  compiler <span class="type">varchar</span>(<span class="number">12</span>),</span><br><span class="line">  gecomplr <span class="type">varchar</span>(<span class="number">10</span>),</span><br><span class="line">  checker <span class="type">varchar</span>(<span class="number">10</span>),</span><br><span class="line">  ent_date <span class="type">varchar</span>(<span class="number">10</span>),</span><br><span class="line">  beg_chg_ty <span class="type">varchar</span>(<span class="number">21</span>),</span><br><span class="line">  end_chg_ty <span class="type">varchar</span>(<span class="number">30</span>),</span><br><span class="line">  geom geometry</span><br><span class="line">);</span><br><span class="line"><span class="comment">--建立索引</span></span><br><span class="line"><span class="keyword">CREATE</span> INDEX v6_time_cnty_pts_utf_wgs84_index <span class="keyword">ON</span> v6_time_cnty_pts_utf_wgs84 <span class="keyword">USING</span> btree(gid);</span><br><span class="line"><span class="comment">--表说明</span></span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">TABLE</span> public.v6_time_cnty_pts_utf_wgs84 <span class="keyword">IS</span> <span class="string">&#x27;第6版中国历史地理时间序列点数据&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.gid <span class="keyword">IS</span> <span class="string">&#x27;主键ID&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.name_py <span class="keyword">IS</span> <span class="string">&#x27;拼音名称&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.name_ch <span class="keyword">IS</span> <span class="string">&#x27;简体中文名称&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.name_ft <span class="keyword">IS</span> <span class="string">&#x27;繁体中文名称&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.x_coor <span class="keyword">IS</span> <span class="string">&#x27;经度&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.y_coor <span class="keyword">IS</span> <span class="string">&#x27;纬度&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.pres_loc <span class="keyword">IS</span> <span class="string">&#x27;现所在地&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.type_py <span class="keyword">IS</span> <span class="string">&#x27;建制类型拼音&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.type_ch <span class="keyword">IS</span> <span class="string">&#x27;建制类型简体中文&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.lev_rank <span class="keyword">IS</span> <span class="string">&#x27;建制等级&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.beg_yr <span class="keyword">IS</span> <span class="string">&#x27;建制开始时间&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.beg_rule <span class="keyword">IS</span> <span class="string">&#x27;开始时间精度&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.end_yr <span class="keyword">IS</span> <span class="string">&#x27;建制结束时间&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.end_rule <span class="keyword">IS</span> <span class="string">&#x27;结束时间精度&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.note_id <span class="keyword">IS</span> <span class="string">&#x27;系统id&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.obj_type <span class="keyword">IS</span> <span class="string">&#x27;geometry对象类型&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.sys_id <span class="keyword">IS</span> <span class="string">&#x27;系统id&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.geo_src <span class="keyword">IS</span> <span class="string">&#x27;geometry数据来源&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.compiler <span class="keyword">IS</span> <span class="string">&#x27;编辑人员&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.gecomplr <span class="keyword">IS</span> <span class="string">&#x27;绘制人员&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.checker <span class="keyword">IS</span> <span class="string">&#x27;审核人员&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.ent_date <span class="keyword">IS</span> <span class="string">&#x27;结束时间&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.beg_chg_ty <span class="keyword">IS</span> <span class="string">&#x27;建制开始原因&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.end_chg_ty <span class="keyword">IS</span> <span class="string">&#x27;建制结束原因&#x27;</span>;</span><br><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">COLUMN</span> public.v6_time_cnty_pts_utf_wgs84.geom <span class="keyword">IS</span> <span class="string">&#x27;geometry对象&#x27;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>插入</strong></p>
+<p>插入一条数据进去</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> v6_time_cnty_pts_utf_wgs84(name_py,name_ch,name_ft,x_coor,y_coor,pres_loc,type_py,type_ch,lev_rank,beg_yr,beg_rule,end_yr,end_rule,note_id,obj_type,sys_id,geo_src,compiler,gecomplr,checker,ent_date,beg_chg_ty,end_chg_ty,geom) <span class="keyword">VALUES</span>(<span class="string">&#x27;Luowubu&#x27;</span>,<span class="string">&#x27;罗婺部&#x27;</span>,<span class="string">&#x27;羅婺部&#x27;</span>,<span class="number">102.40378</span>,<span class="number">25.88668</span>,<span class="string">&#x27;云南省禄劝彝族苗族自治县西北七十二里云龙&#x27;</span>,<span class="string">&#x27;Bu&#x27;</span>,<span class="string">&#x27;部&#x27;</span>,<span class="string">&#x27;6&#x27;</span>,<span class="number">960</span>,<span class="keyword">null</span>,<span class="number">1253</span>,<span class="keyword">null</span>,<span class="number">80317</span>,<span class="string">&#x27;	POINT&#x27;</span>,<span class="number">80317</span>,<span class="string">&#x27;FROM_FD&#x27;</span>,<span class="keyword">null</span>,<span class="keyword">null</span>,<span class="keyword">null</span>,<span class="keyword">null</span>,<span class="string">&#x27;新建&#x27;</span>,<span class="string">&#x27;撤销&#x27;</span>,st_geomfromtext(<span class="string">&#x27;POINT(102.4037799950270653 25.88667999033716072)&#x27;</span>,<span class="number">4326</span>))</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-4-Python把生成的txt文件写入PostSQL数据库"><a href="#4-4-Python把生成的txt文件写入PostSQL数据库" class="headerlink" title="4.4 Python把生成的txt文件写入PostSQL数据库"></a>4.4 Python把生成的txt文件写入PostSQL数据库</h3><ul>
+<li><p>测试一下能不能连接成功</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=gbk</span></span><br><span class="line"><span class="keyword">import</span> psycopg2</span><br><span class="line"></span><br><span class="line">conn = psycopg2.connect(database=<span class="string">&quot;mapdata&quot;</span>, user=<span class="string">&quot;postgres&quot;</span>, password=<span class="string">&quot;123456&quot;</span>, host=<span class="string">&quot;127.0.0.1&quot;</span>, port=<span class="string">&quot;5432&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;连接成功&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接成功之后，就可以把在4.2生成的<strong>txt文件写入PostSQL数据库了</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立游标</span></span><br><span class="line">cur = conn.cursor()</span><br><span class="line">f=<span class="built_in">open</span>(<span class="string">r&#x27;E:\develop_gis\map website\data\V6 Time Series County Points\v6_time_cnty_pts_utf_wgs84\v6_time_cnty_pts_utf_wgs84.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="comment"># 按行读入txt</span></span><br><span class="line">flines=f.readlines()</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> flines:</span><br><span class="line">    <span class="comment"># 去掉干扰，切词</span></span><br><span class="line">    abbrlist=line.replace(<span class="string">&quot;&#x27;&quot;</span>,<span class="string">&quot; &quot;</span>).split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    <span class="comment"># name_py,name_ch,name_ft,x_coor,y_coor,pres_loc,type_py,type_ch,lev_rank,beg_yr,beg_rule,end_yr,end_rule,note_id,obj_type,sys_id,geo_src,compiler,gecomplr,checker,ent_date,beg_chg_ty,end_chg_ty,geom</span></span><br><span class="line">    name_py=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">0</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        name_py=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">0</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    name_ch=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">1</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        name_ch=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">1</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    name_ft=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">2</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        name_ft=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">2</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    x_coor=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">3</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        x_coor=abbrlist[<span class="number">3</span>]</span><br><span class="line">    y_coor=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">4</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        y_coor=abbrlist[<span class="number">4</span>]</span><br><span class="line">    pres_loc=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">5</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        pres_loc=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">5</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    type_py=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">6</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        type_py=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">6</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    type_ch=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">7</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        type_ch=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">7</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    lev_rank=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">8</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        lev_rank=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">8</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    beg_yr=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">9</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        beg_yr=abbrlist[<span class="number">9</span>]</span><br><span class="line">    beg_rule=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">10</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        beg_rule=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">10</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    end_yr=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">11</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        end_yr=abbrlist[<span class="number">11</span>]</span><br><span class="line">    end_rule=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">12</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        end_rule=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">12</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    note_id=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">13</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        note_id=abbrlist[<span class="number">13</span>]</span><br><span class="line">    obj_type=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">14</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        obj_type=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">14</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    sys_id=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">15</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        sys_id=abbrlist[<span class="number">15</span>]</span><br><span class="line">    geo_src=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">16</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        geo_src=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">16</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    compiler=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">17</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        compiler=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">17</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    gecomplr=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">18</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        gecomplr=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">18</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    checker=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">19</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        checker=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">19</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    ent_date=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">20</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        ent_date=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">20</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    beg_chg_ty=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">21</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        beg_chg_ty=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">21</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    end_chg_ty=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">22</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        end_chg_ty=<span class="string">&quot;&#x27;&quot;</span>+abbrlist[<span class="number">22</span>]+<span class="string">&quot;&#x27;&quot;</span></span><br><span class="line">    geom=<span class="string">&#x27;null&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> (abbrlist[<span class="number">23</span>]!=<span class="string">&#x27;&#x27;</span>):</span><br><span class="line">        geom=<span class="string">&quot;st_geomfromtext(&#x27;&quot;</span>+abbrlist[<span class="number">23</span>]+<span class="string">&quot;&#x27;,4326)&quot;</span></span><br><span class="line">    <span class="comment"># 拼接sql语句</span></span><br><span class="line">    sqltxt=<span class="string">&quot;INSERT INTO v6_time_cnty_pts_utf_wgs84(&quot;</span> \</span><br><span class="line">           <span class="string">&quot;name_py,name_ch,name_ft,x_coor,y_coor,pres_loc,type_py,type_ch,lev_rank,beg_yr,beg_rule,&quot;</span> \</span><br><span class="line">           <span class="string">&quot;end_yr,end_rule,note_id,obj_type,sys_id,geo_src,compiler,gecomplr,checker,ent_date,&quot;</span> \</span><br><span class="line">           <span class="string">&quot;beg_chg_ty,end_chg_ty,geom) VALUES(&quot;</span>+name_py+<span class="string">&quot;,&quot;</span>+name_ch+<span class="string">&quot;,&quot;</span>+name_ft+<span class="string">&quot;,&quot;</span>+x_coor+<span class="string">&quot;,&quot;</span>+y_coor+<span class="string">&quot;,&quot;</span>\</span><br><span class="line">           +pres_loc+<span class="string">&quot;,&quot;</span>+type_py+<span class="string">&quot;,&quot;</span>+type_ch+<span class="string">&quot;,&quot;</span>+lev_rank+<span class="string">&quot;,&quot;</span>+beg_yr+<span class="string">&quot;,&quot;</span>+beg_rule+<span class="string">&quot;,&quot;</span>+end_yr+<span class="string">&quot;,&quot;</span>+end_rule+<span class="string">&quot;,&quot;</span>\</span><br><span class="line">           +note_id+<span class="string">&quot;,&quot;</span>+obj_type+<span class="string">&quot;,&quot;</span>+sys_id+<span class="string">&quot;,&quot;</span>+geo_src+<span class="string">&quot;,&quot;</span>+compiler+<span class="string">&quot;,&quot;</span>+gecomplr+<span class="string">&quot;,&quot;</span>+checker+<span class="string">&quot;,&quot;</span>+ent_date+<span class="string">&quot;,&quot;</span>\</span><br><span class="line">           +beg_chg_ty+<span class="string">&quot;,&quot;</span>+end_chg_ty+<span class="string">&quot;,&quot;</span>+geom+<span class="string">&quot;)&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(sqltxt)</span><br><span class="line">    <span class="comment"># 执行sql</span></span><br><span class="line">    cur.execute(sqltxt)</span><br><span class="line"><span class="comment"># 关闭连接</span></span><br><span class="line">conn.commit()</span><br><span class="line">conn.close()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;插入完成&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-5-总结流程"><a href="#4-5-总结流程" class="headerlink" title="4.5 总结流程"></a>4.5 总结流程</h3><blockquote>
+<p>用python处理数据的流程：先把python的环境搭建好，然后读取shp文件，与此同时会返回一个txt的文件；接着，在PostSQL中建表，并插入一条数据测试；然后，用python连接数据库，把生成的txt文件写入数据库中！</p>
+<p><strong>Python读shp文件&#x3D;&#x3D;》返回txt文件&#x3D;&#x3D;》PostSQL数据库中建表&#x3D;&#x3D;》插入一条数据&#x3D;&#x3D;》Python连接数据库&#x3D;&#x3D;》txt文件写入数据库</strong></p>
+<p>简单总结就两步：</p>
+<ul>
+<li><strong>shp文件导出txt</strong></li>
+<li><strong>txt文件导入pg数据库</strong></li>
+</ul>
+</blockquote>
+<h2 id="5-上传代码到GitHub"><a href="#5-上传代码到GitHub" class="headerlink" title="5 上传代码到GitHub"></a>5 上传代码到GitHub</h2><ul>
+<li><p>在GitHub上面新建一个仓库</p>
+</li>
+<li><p>选择本地需要上传的文件夹作为本地仓库，右键<code>git bash here</code></p>
+</li>
+<li><p>敲命令行上传代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">-----------------------------</span><br><span class="line">-----------------------------</span><br><span class="line"># 上传本地的文件到GitHub仓库</span><br><span class="line"></span><br><span class="line"># 初始化</span><br><span class="line">git init</span><br><span class="line"></span><br><span class="line"># 把GitHub上面的仓库克隆下来</span><br><span class="line">git clone https://github.com/xxxxx/historymap.git</span><br><span class="line"></span><br><span class="line"># 把本地文件添加到暂存区</span><br><span class="line">git add .</span><br><span class="line"></span><br><span class="line"># 将暂存区的文件添加到仓库中</span><br><span class="line">git commit -m &quot;first commit&quot;</span><br><span class="line"></span><br><span class="line"># 将仓库中的文件提交提交到远程仓库</span><br><span class="line">git push origin main</span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line">------------------------------</span><br><span class="line"># 删除GitHub仓库中的文件</span><br><span class="line"></span><br><span class="line"># 查看有哪些文件</span><br><span class="line">dir</span><br><span class="line"></span><br><span class="line"># 删除一个文件</span><br><span class="line">git rm -r --cached xxx</span><br><span class="line">git rm -r --cached xxxx</span><br><span class="line">git rm -r --cached xxxxx</span><br><span class="line"></span><br><span class="line"># 提交删除信息，添加操作说明</span><br><span class="line">git commit -m &quot;delete&quot;</span><br><span class="line"></span><br><span class="line"># push到GitHub仓库</span><br><span class="line">git push</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>git push origin main&#x2F;git push -u origin main和git push -u origin master有什么区别</strong></p>
+<p>为什么后者代码数据传不上去，参考链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/yzpbright/article/details/115574130">git push -u origin master 与git push –set-upstream origin master_yzpyzp的博客-CSDN博客</a></p>
+<ul>
+<li><p>新建的仓库的<strong>默认分支从master变成了main</strong>，至于origin，就是远程仓库的别名，<strong>github把远程仓库的名称默认称为origin</strong>，自己也可以改为其他名称，就像GitHub之前仓库的默认分支叫做master，而现在改为main</p>
+</li>
+<li><p><code>git push -u</code>是<code>git push --set-upstream</code>的缩写版本；（upstream 是指本地分支与远程仓库中的分支之间的流通道，建立流通道就是建立本地分支与远程分支的关联，建立之后，后续就可以直接使用git push指令把本地分支的commit推到远程分支中）</p>
+</li>
+<li><p><code>git push -u origin main</code>的作用：</p>
+<ul>
+<li><p>先把本地的当前分支推送到远程仓库origin的main分支</p>
+</li>
+<li><p>再把本地的当前分支关联到远程仓库origin的main分支</p>
+<p>相当于<code>git push origin main</code>加上<code>git branch --set-upstream-to=origin/main main</code>的作用，即先把本地分支push到远程仓库中，然后再建立本地分支与远程分支的关联。</p>
+</li>
+</ul>
+</li>
+<li><p>不带任何参数的<code>git push</code>，默认只推送当前分支</p>
+</li>
+<li><p>推送代码时，经常会报以下两个错误：</p>
+<ul>
+<li>&#96;&#96;&#96;<br>fatal: unable to access ‘<a target="_blank" rel="noopener" href="https://github.com/xxxxx/historymap.git/&#39;">https://github.com/xxxxx/historymap.git/&#39;</a>: Failed to connect to github.com port 443 after 22072 ms: Timed out<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ```</span><br><span class="line">  error: src refspec master does not match any</span><br><span class="line">  error: failed to push some refs to &#x27;https://github.com/xxxxx/historymap.git&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>这是网络的原因，GitHub网站经常会出现打不开的问题</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/03/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94SpringSecurity%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-11-09 14:57:23
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/GIS/" title="GIS">
+                        <b>#</b> GIS
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/PostSQL/" title="PostSQL">
+                        <b>#</b> PostSQL
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/PostGIS/" title="PostGIS">
+                        <b>#</b> PostGIS
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/11/15/%E6%9E%84%E5%BB%BA%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE%E7%BD%91%E7%AB%99%E2%80%94%E2%80%9402%20%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E5%B9%B3%E5%8F%B0%EF%BC%9ASpringBoot+MyBatis+PostgreSQL/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="toc-text">1. 需要用到的软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%AE%89%E8%A3%85QGIS%EF%BC%88%E6%98%93%EF%BC%89"><span class="toc-text">1.1 安装QGIS（易）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%89%E8%A3%85PostgreSQL-PostGIS-Navicat-Premium"><span class="toc-text">1.2 安装PostgreSQL+PostGIS+Navicat Premium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%AE%89%E8%A3%85PyCharm"><span class="toc-text">1.3 安装PyCharm</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E2%80%94%E2%80%94PostGIS"><span class="toc-text">2 数据处理——PostGIS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90"><span class="toc-text">2.1 数据来源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93"><span class="toc-text">2.2 数据入库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-PostGIS%E5%B7%A5%E5%85%B7%E4%B8%8A%E4%BC%A0shp"><span class="toc-text">2.3 PostGIS工具上传shp</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE"><span class="toc-text">3 查看数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-QGIS%E6%9F%A5%E7%9C%8Bpg%E5%BA%93%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">3.1 QGIS查看pg库中的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%94%A8Sql%E8%AF%AD%E6%B3%95%E6%9F%A5%E7%9C%8B"><span class="toc-text">3.2 用Sql语法查看</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E2%80%94%E2%80%94Python"><span class="toc-text">4 数据处理——Python</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">4.1 环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Python%E8%AF%BB%E5%8F%96shp%E6%96%87%E4%BB%B6"><span class="toc-text">4.2 Python读取shp文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-PostSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%BB%BA%E8%A1%A8"><span class="toc-text">4.3 PostSQL数据库中建表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Python%E6%8A%8A%E7%94%9F%E6%88%90%E7%9A%84txt%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5PostSQL%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">4.4 Python把生成的txt文件写入PostSQL数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E6%80%BB%E7%BB%93%E6%B5%81%E7%A8%8B"><span class="toc-text">4.5 总结流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81%E5%88%B0GitHub"><span class="toc-text">5 上传代码到GitHub</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

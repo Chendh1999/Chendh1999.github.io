@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title"></div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-11-25 22:27:06
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1592808">在CentOS 7上安装&amp;配置PostgreSQL 12 - 腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+<img src="https://s3.uuu.ovh/imgs/2022/11/25/f9e1d191fc8ce5ae.png" style="zoom:50%;">
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013408188/article/details/109461014">CentOS7环境安装Postgresql12教程_凝望深蓝的博客-CSDN博客_centos7安装postgresql12</a></p>
+<p>重新开始，先卸载：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">rpm</span> <span class="string">-qa</span> <span class="string">|</span> <span class="string">grep</span> <span class="string">postgresql</span>      <span class="string">列出已安装的包,使用yum</span> <span class="string">remove</span> <span class="string">xxxx逐一删除</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p>报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Loaded plugins: fastestmirror, langpacks</span><br><span class="line"></span><br><span class="line">Repository epel is listed more than once in the configuration</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qcsdn123/article/details/120087514">linux yum install  提示：Loaded plugins: fastestmirror_徐先生Paul的博客-CSDN博客</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su postgres</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221126231527850.png" alt="su"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221126231544229.png" alt="image-20221126231544229"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221126231601483.png" alt="image-20221126231601483"></p>
+<p>报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(code=exited, status=1/FAILURE) lock file &quot;postmaster.pid&quot; already exists，Failed tostart PostgreSQL</span><br></pre></td></tr></table></figure>
+
+<p>第一步：</p>
+<p>去postgresql的安装目录删除postmaster.pid该文件</p>
+<p>第二步：</p>
+<p>删除后重启postgresql</p>
+<p>service postgresql-12 restart</p>
+<p>第三步：</p>
+<p>查看 postgresql的状态</p>
+<p>service postgresql-11 status</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014368040/article/details/89706274">(code&#x3D;exited, status&#x3D;1&#x2F;FAILURE) lock file “postmaster.pid” already exists，Failed tostart PostgreSQL_谦卑的心的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37048012/article/details/120554071">Centos 7 在线安装 PostgreSQL 12_蒜丶的博客-CSDN博客_centos在线安装postgresql</a></p>
+<p>安装postgis:<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/afc52d3871f1">PostgreSQL12+PostGIS安装(一) - 简书 (jianshu.com)</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_dump -U postgres -d postgres -f dump.sql</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_dump: 错误: 无法打开输出文件&quot;dump.sql&quot;: Permission denied</span><br></pre></td></tr></table></figure>
+
+
+
+<p>备份数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pg_dump -h localhost -p 5432 -U postgres -d postgres&gt; d:\postgres.sql</span><br></pre></td></tr></table></figure>
+
+
+
+<p>腾讯云运行测试数据库：</p>
+<p>导入数据库</p>
+<p>psql -U postgres(用户名) 数据库名(缺省时同用户名) &lt; &#x2F;data&#x2F;dum.sql</p>
+<p>导出整个数据库</p>
+<blockquote>
+<p>pg_dump -h localhost -U postgres(用户名) 数据库名(缺省时同用户名) &gt;&#x2F;data&#x2F;dum.sql</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Environment=PGDATA=/var/lib/pgsql/12/data/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221127220854447.png" alt="image-20221127220854447"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select rolname,rolpassword from pg_authid;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221127225726266.png" alt="image-20221127225726266"></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/16683b09e9f0">PostgreSQL：修改数据库用户的密码 - 简书 (jianshu.com)</a></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221128161705124.png" alt="image-20221128161705124"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221128161729907.png" alt="image-20221128161729907"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221128161748954.png" alt="image-20221128161748954"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221128161801406.png" alt="image-20221128161801406"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221128162734639.png" alt="image-20221128162734639"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221128163701418.png" alt="image-20221128163701418"></p>
+<p>腾讯云CPU爆满：</p>
+<h3 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h3><ol>
+<li><p>根据分析的占用资源的进程情况，记录需要终止的进程 PID。</p>
+</li>
+<li><p>输入 <code>k</code>。</p>
+</li>
+<li><p>输入需要终止进程的 PID ，按</p>
+<blockquote>
+<p>注意</p>
+<p>若按 <strong>Enter</strong> 后出现 <code>kill PID 23 with signal [15]:</code>，则继续按 <strong>Enter</strong> 保持默认设定即可。</p>
+</blockquote>
+</li>
+<li><p>操作成功后，界面会出现<code>Send pid 23 signal [15/sigterm]</code> 的提示信息，按 <strong>Enter</strong> 确认即可</p>
+</li>
+</ol>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/213/10310">云服务器 Linux 实例：CPU 或内存占用率高导致无法登录-故障处理-文档中心-腾讯云 (tencent.com)</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.0.16.8:5432/gismap</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>查看nginx配置文件</p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221129170359969.png" alt="image-20221129170359969"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">thymeleaf:</span><br><span class="line">  check-template: false</span><br><span class="line">  check-template-location: false</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221130131255966.png" alt="image-20221130131255966"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221130131307566.png" alt="image-20221130131307566"></p>
+<p><img src="/2022/11/25/1/Users\chendh\AppData\Roaming\Typora\typora-user-images\image-20221130131320708.png" alt="image-20221130131320708"></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/25/%E6%9E%84%E5%BB%BA%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE%E7%BD%91%E7%AB%99%E2%80%94%E2%80%9407%20VUE%E6%95%B4%E5%90%88Leaflet,VUE%E6%89%93%E5%8C%85%E5%90%88%E5%B9%B6%E5%88%B0%E5%90%8E%E7%AB%AF,%E5%89%8D%E5%90%8E%E7%AB%AF%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-11-25 22:27:06
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/11/30/%E9%87%8D%E8%A3%85%E8%85%BE%E8%AE%AF%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%88%E6%AD%A2%E8%BF%9B%E7%A8%8B"><span class="toc-text">终止进程</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

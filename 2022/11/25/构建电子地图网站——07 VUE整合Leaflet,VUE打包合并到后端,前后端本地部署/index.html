@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      构建电子地图网站——07 VUE整合Leaflet/VUE打包合并到后端/前后端本地部署 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">构建电子地图网站——07 VUE整合Leaflet/VUE打包合并到后端/前后端本地部署</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-11-25 17:51:08
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Springboot/" title="Springboot">
+                    <b>#</b> Springboot
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/GIS/" title="GIS">
+                    <b>#</b> GIS
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/PostSQL/" title="PostSQL">
+                    <b>#</b> PostSQL
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="1-VUE整合Leaflet"><a href="#1-VUE整合Leaflet" class="headerlink" title="1 VUE整合Leaflet"></a>1 VUE整合Leaflet</h2><h3 id="1-1-安装leaflet模块"><a href="#1-1-安装leaflet模块" class="headerlink" title="1.1 安装leaflet模块"></a>1.1 安装leaflet模块</h3><p>​        <code>npm install vue2-leaflet -S</code></p>
+<p>​        <code>npm install leaflet -S</code></p>
+<h3 id="1-2-加载地图"><a href="#1-2-加载地图" class="headerlink" title="1.2 加载地图"></a>1.2 加载地图</h3><p>简单的加载腾讯地图，包括一个点、一个标签、一个面和触发事件</p>
+<ul>
+<li><p>新建一个**&#x2F;src&#x2F;js&#x2F;txTileLayer.js**文件，放瓦片函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">TXTileLayer</span> = L.<span class="property">TileLayer</span>.<span class="title function_">extend</span>(&#123;</span><br><span class="line">  <span class="attr">getTileUrl</span>: <span class="keyword">function</span>(<span class="params">tilePoint</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> urlArgs = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">let</span> getUrlArgs = <span class="variable language_">this</span>.<span class="property">options</span>.<span class="property">getUrlArgs</span>;</span><br><span class="line">    <span class="keyword">if</span> (getUrlArgs) &#123;</span><br><span class="line">      urlArgs = <span class="title function_">getUrlArgs</span>(tilePoint);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      urlArgs = &#123;</span><br><span class="line">        <span class="attr">z</span>: tilePoint.<span class="property">z</span>,</span><br><span class="line">        <span class="attr">x</span>: tilePoint.<span class="property">x</span>,</span><br><span class="line">        <span class="attr">y</span>: tilePoint.<span class="property">y</span></span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> L.<span class="property">Util</span>.<span class="title function_">template</span>(</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">_url</span>,</span><br><span class="line">      L.<span class="title function_">extend</span>(urlArgs, <span class="variable language_">this</span>.<span class="property">options</span>, &#123;</span><br><span class="line">        <span class="attr">s</span>: <span class="variable language_">this</span>.<span class="title function_">_getSubdomain</span>(tilePoint)</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<strong>src&#x2F;icon</strong>中放一个<strong>dian.png</strong>，这个是点的图标</p>
+</li>
+<li><p><strong>src&#x2F;components&#x2F;HelperDocument.vue</strong>中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;map&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &quot;leaflet/dist/leaflet.css&quot;;</span><br><span class="line">import &quot;leaflet/dist/leaflet.js&quot;;</span><br><span class="line">import &#123; TXTileLayer &#125; from &quot;../js/txTileLayer.js&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      map: null</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    initLeaflet() &#123;</span><br><span class="line">      this.map = L.map(&quot;map&quot;, &#123;</span><br><span class="line">        center: [39.916527, 116.397128],</span><br><span class="line">        zoom: 10,</span><br><span class="line">        maxZoom: 23,</span><br><span class="line">        minZoom: 3</span><br><span class="line">      &#125;);</span><br><span class="line">      //按照新定义瓦片规则加载底图</span><br><span class="line">      let url =</span><br><span class="line">        &quot;http://rt1.map.gtimg.com/realtimerender/?z=&#123;z&#125;&amp;x=&#123;x&#125;&amp;y=&#123;y&#125;&amp;type=vector&amp;style=1&amp;v=1.1.1&quot;;</span><br><span class="line">      let getUrlArgs = function(tilePoint) &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">          z: tilePoint.z,</span><br><span class="line">          x: tilePoint.x,</span><br><span class="line">          y: Math.pow(2, tilePoint.z) - 1 - tilePoint.y</span><br><span class="line">        &#125;;</span><br><span class="line">      &#125;;</span><br><span class="line">      let options = &#123;</span><br><span class="line">        subdomain: &quot;012&quot;,</span><br><span class="line">        getUrlArgs: getUrlArgs</span><br><span class="line">      &#125;;</span><br><span class="line">      const txMap = new TXTileLayer(url, options);</span><br><span class="line">      txMap.addTo(this.map);</span><br><span class="line">      //marker</span><br><span class="line">      var myDivIcon = L.divIcon(&#123;</span><br><span class="line">        className: &quot;my-div-icon&quot;,</span><br><span class="line">        html: &quot;这是一个测试用的marker&quot;,</span><br><span class="line">        iconSize: 150</span><br><span class="line">      &#125;);</span><br><span class="line">      var marker = L.marker([39.916527, 116.397128], &#123; icon: myDivIcon &#125;).addTo(</span><br><span class="line">        this.map</span><br><span class="line">      );</span><br><span class="line">      marker.on(&quot;click&quot;, function(e) &#123;</span><br><span class="line">        console.log(e);</span><br><span class="line">        alert(&quot;我是Marker。&quot;);</span><br><span class="line">      &#125;);</span><br><span class="line">      //point</span><br><span class="line">      var myIcon = L.icon(&#123;</span><br><span class="line">        iconUrl: require(&quot;../icon/dian.png&quot;), //icon图片</span><br><span class="line">        iconSize: [30, 30], //icon的尺寸</span><br><span class="line">        iconAnchor: [15, 15], //锚点在icon上的坐标，左下角为原点</span><br><span class="line">        popupAnchor: [40, 0], //弹出框的锚点</span><br><span class="line">        shadowUrl: require(&quot;leaflet/dist/images/marker-shadow.png&quot;), //阴影图片</span><br><span class="line">        shadowSize: [30, 30], //阴影尺寸</span><br><span class="line">        shadowAnchor: [15, 15] //阴影锚点</span><br><span class="line">      &#125;);</span><br><span class="line">      var point = L.marker([39.916527, 116.397128], &#123;</span><br><span class="line">        icon: myIcon,</span><br><span class="line">        title: &quot;这是一个测试用的point&quot;</span><br><span class="line">      &#125;).addTo(this.map);</span><br><span class="line">      point.on(&quot;click&quot;, function(e) &#123;</span><br><span class="line">        console.log(e);</span><br><span class="line">        alert(&quot;我是point。&quot;);</span><br><span class="line">      &#125;);</span><br><span class="line">      //polygon</span><br><span class="line">      var polygon = L.polygon(</span><br><span class="line">        [</span><br><span class="line">          [</span><br><span class="line">            [40.0, 116.4],</span><br><span class="line">            [40.1, 116.4],</span><br><span class="line">            [40.1, 116.5],</span><br><span class="line">            [40.0, 116.5]</span><br><span class="line">          ], // 外部</span><br><span class="line">          [</span><br><span class="line">            [40.05, 116.45],</span><br><span class="line">            [40.06, 116.45],</span><br><span class="line">            [40.06, 116.46],</span><br><span class="line">            [40.05, 116.46]</span><br><span class="line">          ] // 孔洞</span><br><span class="line">        ],</span><br><span class="line">        &#123;</span><br><span class="line">          color: &quot;green&quot;,</span><br><span class="line">          fillColor: &quot;#f03&quot;,</span><br><span class="line">          fillOpacity: 0.5</span><br><span class="line">        &#125;</span><br><span class="line">      ).addTo(this.map);</span><br><span class="line">      // 绑定一个提示标签</span><br><span class="line">      polygon.bindTooltip(&quot;这是个多边形&quot;);</span><br><span class="line">      // 飞到这个多边形的位置</span><br><span class="line">      // this.map.fitBounds(polygon.getBounds());</span><br><span class="line">      polygon.on(&quot;click&quot;, function(e) &#123;</span><br><span class="line">        // console.log(e);</span><br><span class="line">        alert(&quot;我是polygon&quot;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted() &#123;</span><br><span class="line">    this.initLeaflet();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">#map &#123;</span><br><span class="line">  width: 100%;</span><br><span class="line">  height: 100%;</span><br><span class="line">&#125;</span><br><span class="line">.my-div-icon &#123;</span><br><span class="line">  font-size: 15px;</span><br><span class="line">  width: 5px;</span><br><span class="line">  color: red;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>HistoryMap.vue</strong></p>
+<p>给左侧栏加一个绝对的top坐标</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div style=&quot;background-color: #fff; height: 100vh;width: 15%;position:absolute;left:0px;top: 60px&quot;&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>build&#x2F;webpack.base.conf.js</strong></p>
+<p>修改图标打包的limit值，把它改大一点，由原来的10000，改成80000</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">test</span>: <span class="regexp">/\.(woff2?|eot|ttf|otf)(\?.*)?$/</span>,</span><br><span class="line">    <span class="attr">loader</span>: <span class="string">&#x27;url-loader&#x27;</span>,</span><br><span class="line">    <span class="attr">options</span>: &#123;</span><br><span class="line">    <span class="attr">limit</span>: <span class="number">80000</span>,</span><br><span class="line">    <span class="attr">name</span>: utils.<span class="title function_">assetsPath</span>(<span class="string">&#x27;fonts/[name].[hash:7].[ext]&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="2-VUE打包合并到后端"><a href="#2-VUE打包合并到后端" class="headerlink" title="2 VUE打包合并到后端"></a>2 VUE打包合并到后端</h2><h3 id="2-1-vue配置抽出"><a href="#2-1-vue配置抽出" class="headerlink" title="2.1 vue配置抽出"></a>2.1 vue配置抽出</h3><p>因为打包之后，文件都会混在一起，就很难修改了，所以要先把可能会修改的配置提取出来，再进行打包，把请求后端的url提取出来：</p>
+<ul>
+<li><p><strong>config.js</strong></p>
+<p>static中新建config.js文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">g</span>=&#123;</span><br><span class="line">    <span class="attr">BASE_URL</span>: <span class="string">&#x27;http://localhost:8081/history/geometry?&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>index.html</strong></p>
+<p>修改mapweb-vue&#x2F;index.html文件，引入config.js</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/static/config.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>vue-gismap<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- built files will be auto injected --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>HistoryMap.vue</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var urlbase = window.g.BASE_URL;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-2-打包"><a href="#2-2-打包" class="headerlink" title="2.2 打包"></a>2.2 打包</h3><ul>
+<li><p>修改<strong>config&#x2F;index.js</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将bulid下的<span class="attr">assetsPublicPath</span>: <span class="string">&#x27;/&#x27;</span>,改为<span class="attr">assetsPublicPath</span>: <span class="string">&#x27;./&#x27;</span>,</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>终端运行</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm run build</span><br></pre></td></tr></table></figure>
+
+<p>运行成功之后，会在多出一个<strong>dist</strong>文件夹，这个是打包生成的文件，需要把它放在后端程序之中！</p>
+</li>
+</ul>
+<h3 id="2-3-并入Springboot"><a href="#2-3-并入Springboot" class="headerlink" title="2.3 并入Springboot"></a>2.3 并入Springboot</h3><p>打开IDEA中的后端项目，在<strong>src\main\resources</strong>下新建一个文件夹<strong>static</strong>，把<strong>dist</strong>文件夹中的内容拷贝到<strong>static</strong>中</p>
+<h3 id="2-4-运行测试"><a href="#2-4-运行测试" class="headerlink" title="2.4 运行测试"></a>2.4 运行测试</h3><p>在idea中运行程序之后，访问<code>http://localhost:8081</code>，成功！</p>
+<h2 id="3-工程打包本地部署"><a href="#3-工程打包本地部署" class="headerlink" title="3 工程打包本地部署"></a>3 工程打包本地部署</h2><h3 id="3-1-IDEA中工程打包"><a href="#3-1-IDEA中工程打包" class="headerlink" title="3.1 IDEA中工程打包"></a>3.1 IDEA中工程打包</h3><p>首先在<strong>maven</strong>的<strong>Lifecycle</strong>中，先<strong>clean</strong>一下，再<strong>package</strong>一下，稍等一会儿，在Project中的<strong>target</strong>目录下，就会出现打包好的<strong>jar</strong>包——<code>mapweb-0.0.1-SNAPSHOT.jar</code></p>
+<img src="https://s3.uuu.ovh/imgs/2022/11/25/74d8d6b332ea642c.png" style="zoom: 33%;">
+
+
+
+<h3 id="3-2-运行测试"><a href="#3-2-运行测试" class="headerlink" title="3.2 运行测试"></a>3.2 运行测试</h3><ul>
+<li><p>打开cmd</p>
+</li>
+<li><p>切换到jar包所在目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">e:</span><br><span class="line">cd E:\develop_gis\map website\project\mapweb\mapweb\target</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行jar包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar mapweb-0.0.1-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行成功，完成本地部署</p>
+</li>
+</ul>
+<h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><ul>
+<li><p><code>Failed to determine a suitable driver class</code></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Description:</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Failed</span> <span class="title">to</span> <span class="title">configure</span> <span class="title">a</span> <span class="title">DataSource</span>: &#x27;<span class="title">url</span>&#x27; <span class="title">attribute</span> <span class="title">is</span> <span class="title">not</span> <span class="title">specified</span> <span class="title">and</span> <span class="title">no</span> <span class="title">embedded</span> <span class="title">datasource</span> <span class="title">could</span> <span class="title">be</span> <span class="title">configured</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Reason</span>: <span class="title">Failed</span> <span class="title">to</span> <span class="title">determine</span> <span class="title">a</span> <span class="title">suitable</span> <span class="title">driver</span> <span class="title">class</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Action</span>:</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">Consider</span> <span class="title">the</span> <span class="title">following</span>:</span></span><br><span class="line"><span class="function">        <span class="title">If</span> <span class="title">you</span> <span class="title">want</span> <span class="title">an</span> <span class="title">embedded</span> <span class="title">database</span> (<span class="title">H2</span>, <span class="title">HSQL</span> <span class="title">or</span> <span class="title">Derby</span>), <span class="title">please</span> <span class="title">put</span> <span class="title">it</span> <span class="title">on</span> <span class="title">the</span> <span class="title">classpath</span>.</span></span><br><span class="line"><span class="function">        <span class="title">If</span> <span class="title">you</span> <span class="title">have</span> <span class="title">database</span> <span class="title">settings</span> <span class="title">to</span> <span class="title">be</span> <span class="title">loaded</span> <span class="title">from</span> <span class="title">a</span> <span class="title">particular</span> <span class="title">profile</span> <span class="title">you</span> <span class="title">may</span> <span class="title">need</span> <span class="title">to</span> <span class="title">activate</span> <span class="title">it</span> (<span class="title">no</span> <span class="title">profiles</span> <span class="title">are</span> <span class="title">currently</span> <span class="title">active</span>).</span></span><br><span class="line"><span class="function">        </span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>这个问题归根结底是程序的yml配置文件和没有打包进入target文件夹下，<strong>即在pom.xml文件下没有配置yml路径！！！</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/49be9d172809451496090afcb8a2b778.png" alt="img"></p>
+</li>
+<li><p>当yml和mapper文件都在target目录下之后，程序能够部署了，但是没有界面展示，此时的静态资源文件static还没有打包进入target下，所以在pom.xml中应该有如下的配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--编译main下面的xml文件和.properties文件--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>true<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--编译resources下面的配置文件和xml文件--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.yml<span class="tag">&lt;/<span class="name">include</span>&gt;</span>  <span class="comment">&lt;!--配置application.yml--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span>  <span class="comment">&lt;!--配置mapper下的xml--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.*<span class="tag">&lt;/<span class="name">include</span>&gt;</span>   <span class="comment">&lt;!--配置static静态资源--&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>参考链接：<a target="_blank" rel="noopener" href="https://www.pudn.com/news/633ec15e272bb74d44331060.html#:~:text=springcloud%E8%A7%A3%E5%86%B3%E8%BF%90%E8%A1%8C%E5%87%BA%E7%8E%B0Failed">springcloud解决运行出现Failed to determine a suitable driver class-pudn.com</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jingtao232/article/details/85120198">springboot maven打包静态资源文件_Tom&amp;Jerry的博客-CSDN博客</a></p>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/24/vscode%E7%9A%84%E6%8F%92%E4%BB%B6%E5%92%8C%E4%B8%80%E4%BA%9B%E5%BF%AB%E6%8D%B7%E6%93%8D%E4%BD%9C%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-11-25 17:51:08
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Springboot/" title="Springboot">
+                        <b>#</b> Springboot
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/GIS/" title="GIS">
+                        <b>#</b> GIS
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/PostSQL/" title="PostSQL">
+                        <b>#</b> PostSQL
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/11/25/1/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-VUE%E6%95%B4%E5%90%88Leaflet"><span class="toc-text">1 VUE整合Leaflet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%AE%89%E8%A3%85leaflet%E6%A8%A1%E5%9D%97"><span class="toc-text">1.1 安装leaflet模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%8A%A0%E8%BD%BD%E5%9C%B0%E5%9B%BE"><span class="toc-text">1.2 加载地图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-VUE%E6%89%93%E5%8C%85%E5%90%88%E5%B9%B6%E5%88%B0%E5%90%8E%E7%AB%AF"><span class="toc-text">2 VUE打包合并到后端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-vue%E9%85%8D%E7%BD%AE%E6%8A%BD%E5%87%BA"><span class="toc-text">2.1 vue配置抽出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%89%93%E5%8C%85"><span class="toc-text">2.2 打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%B9%B6%E5%85%A5Springboot"><span class="toc-text">2.3 并入Springboot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-text">2.4 运行测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B7%A5%E7%A8%8B%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2"><span class="toc-text">3 工程打包本地部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-IDEA%E4%B8%AD%E5%B7%A5%E7%A8%8B%E6%89%93%E5%8C%85"><span class="toc-text">3.1 IDEA中工程打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-text">3.2 运行测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E9%94%99"><span class="toc-text">报错</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

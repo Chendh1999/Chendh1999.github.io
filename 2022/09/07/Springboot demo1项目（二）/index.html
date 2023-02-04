@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Springboot demo1项目（二） 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Springboot demo1项目（二）</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-09-07 22:40:44
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Springboot/" title="Springboot">
+                    <b>#</b> Springboot
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Java/" title="Java">
+                    <b>#</b> Java
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="1-MySQL数据库连接出错：2003-Can’t-connect-to-MySQL-server-on-‘localhost’-10038"><a href="#1-MySQL数据库连接出错：2003-Can’t-connect-to-MySQL-server-on-‘localhost’-10038" class="headerlink" title="1. MySQL数据库连接出错：2003-Can’t connect to MySQL server on ‘localhost’(10038)"></a>1. MySQL数据库连接出错：2003-Can’t connect to MySQL server on ‘localhost’(10038)</h2><p>解决办法：打开任务管理器，在服务处，把MySQL的服务打开</p>
+<h2 id="2-User中setter和getter方法的作用"><a href="#2-User中setter和getter方法的作用" class="headerlink" title="2. User中setter和getter方法的作用"></a>2. User中setter和getter方法的作用</h2><blockquote>
+<p>这是Java中的封装技术。</p>
+</blockquote>
+<ul>
+<li><p>封装：</p>
+<p>也称为信息隐藏，是指利用抽象数据类型将<strong>数据和基于数据的操作</strong>封装在一起，使其构成一个不可分割的独立实体，数据被保护在抽象数据类型的内部，尽可能地隐藏内部的细节，只保留一些<strong>对外接口</strong>使之与外部发生联系。用户无需知道对象内部方法的实现细节，但可以根据对象提供的外部接口(对象名和参数)访问该对象。</p>
+</li>
+<li><p>在设置变量的属性时，我们通常会对数据进行封装，这样就可以增加了数据访问限制，增加了程序可维护性。而实现方法就是：用private去修饰一个变量，然后再用setter方法去设置该变量的值，然后在用getter方法去调用该变量的值。代码如下：<br><img src="https://s3.bmp.ovh/imgs/2022/09/07/deb26c3df5ee9176.png"></p>
+</li>
+<li><p>比如：</p>
+<p>一个父类有多个子类（甚至还有间接子类），程序代码中，子类是不能直接访问父类的private属性的；这时提供的set &#x2F;get方法是很有必要的。诚然，若将父类的属性声明为protected，在子类中就可以直接访问了，但是这种方法破坏了数据的隐藏和封装原则，关键是不利于代码的维护，如果父类中的一个属性改名了，那么在子类中用到该属性名的代码，要发生大范围的修改，而前面的private，set，get方法就比较好，对代码只需小范围的修改，一般都是这么用的，这是一个良好的编程习惯。</p>
+</li>
+</ul>
+<h2 id="3-Java中构造方法的作用"><a href="#3-Java中构造方法的作用" class="headerlink" title="3. Java中构造方法的作用"></a>3. Java中构造方法的作用</h2><blockquote>
+<p>构造方法的主要作用就是<strong>创建对象</strong>。分为有参数和无参数的构造方法。构造方法的名字必须和所在类的名字一致，没有返回值，但不能声明void，访问权限可以为任意，但是一般情况下使用public方法权限。</p>
+</blockquote>
+<ul>
+<li>有参数的构造方法主要就是用于对创建出来的对象进行初始化，如：<br><img src="https://s3.bmp.ovh/imgs/2022/09/07/27b9c522c2933c54.png"></li>
+<li>无参数的构造方法又叫缺省构造方法。若你的类如果没有定义任何构造方法，Java的编译器会配上一个自动缺省构造方法，这个构造方法是空的，不做任何事情，只是为了满足编译需要。或者，也可以自己写一个空的构造方法，在里边对一些属性赋值，或者执行一些其他操作，如：<br><img src="https://s3.bmp.ovh/imgs/2022/09/07/242ee7fc3436c463.png"></li>
+</ul>
+<h2 id="4-super与this关键字"><a href="#4-super与this关键字" class="headerlink" title="4. super与this关键字"></a>4. super与this关键字</h2><p>由于子类不能继承父类的构造方法，因此，如果要<strong>调用父类的构造方法</strong>，可以使用 super 关键字。super 可以用来<strong>访问父类的构造方法、普通方法和属性</strong>。</p>
+<ul>
+<li><p>super与this的区别：</p>
+<ul>
+<li><p>this 指的是<strong>当前对象的引用</strong>，super 是当前对象的<strong>父对象的引用</strong></p>
+</li>
+<li><p>super 关键字的用法：</p>
+<p>super.父类属性名：调用<strong>父类</strong>中的属性</p>
+<p>super.父类方法名：调用<strong>父类</strong>中的方法</p>
+<p>super()：调用<strong>父类</strong>的无参构造方法</p>
+<p>super(参数)：调用<strong>父类</strong>的有参构造方法</p>
+</li>
+<li><p>this 关键字的用法：</p>
+<p>this.属性名：表示<strong>当前对象</strong>的属性</p>
+<p>this.方法名(参数)：表示调用<strong>当前对象</strong>的方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-Mapper注解的介绍"><a href="#5-Mapper注解的介绍" class="headerlink" title="5. @Mapper注解的介绍"></a>5. @Mapper注解的介绍</h2><blockquote>
+<p>Mybatis是一个优秀的持久层框架，什么是持久层呢？就是可以长时间保存数据到数据库或者硬盘当中，不会像放在内存中，一断电就丢失了。<br>@Mapper注解是由Mybatis框架中定义的一个描述数据层接口的注解，注解往往起到的都是一个描述性作用，用于告诉sprigng框架此接口的实现类由Mybatis负责创建，并将其实现类对象存储到spring容器中。</p>
+</blockquote>
+<ul>
+<li>首先我们需要引入jar包（依赖）,分别是JDBC、MYSQL、MYBATIS。<br><img src="https://s3.bmp.ovh/imgs/2022/09/07/5694d78064ef67fd.png"></li>
+<li>然后创建一个接口类，类的上面需要写上@Mapper注释用来表示该接口类的实现类对象交给mybatis底层创建，然后交由Spring框架管理。</li>
+<li>类里写上对数据库中的表数据的抽象方法</li>
+<li>创建一个测试类，用来测试接口中的类的方法可否调用，测试类的上面要写上@SpringBootTest注解表示这个测试类交给Spring框架管理，声明一个接口类型的属性然后上面用@Autowired注解表示将这个接口类的实现类对象赋值给接口属性，然后写上一个方法，方法体里利用test对象调用接口中的testdelete删除方法，返回值是一个整数的类型的变量。输出这个变量，表示是数据库表中被影响行数。我删除的是id为5这个信息所以只有1个影响行数。<br>参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000023818508">https://segmentfault.com/a/1190000023818508</a></li>
+</ul>
+<h2 id="6-依赖注入"><a href="#6-依赖注入" class="headerlink" title="6. 依赖注入"></a>6. 依赖注入</h2><h3 id="6-1-什么是依赖注入？"><a href="#6-1-什么是依赖注入？" class="headerlink" title="6.1 什么是依赖注入？"></a>6.1 什么是依赖注入？</h3><p>  如果一个类A的功能实现需要借助于类B，那么就称类B是类A的<strong>依赖</strong>。如果在类A的内部去实例化类B，那么两者之间会出现较高的<strong>耦合</strong>，一旦类B出现了问题，类A也需要进行改造，如果这样的情况较多，每个类之间都有很多依赖，那么就会出现牵一发而动全身的情况，程序会极难维护，并且很容易出现问题。<br>  要解决这个问题，就要把A类对B类的控制权抽离出来，交给一个第三方去做，<strong>把控制权反转给第三方</strong>，就称作<strong>控制反转（IOC Inversion Of Control）</strong>。控制反转是一种思想，是能够解决问题的一种可能的结果，而<strong>依赖注入（Dependency Injection）</strong>就是其最典型的实现方法。由第三方（我们称作IOC容器）来控制依赖，把他通过<strong>构造函数、属性或者工厂模式</strong>等方法，注入到类A内，这样就极大程度的对类A和类B进行了解耦。<br>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/bandaoyu/article/details/104761209">https://blog.csdn.net/bandaoyu/article/details/104761209</a> </p>
+<h3 id="6-2-如何实现依赖注入"><a href="#6-2-如何实现依赖注入" class="headerlink" title="6.2 如何实现依赖注入"></a>6.2 如何实现依赖注入</h3><p>  以往Spring使用中，依赖注入一般都是通过在Spring的<strong>配置文件中添加bean方法</strong>实现的，相对于这个方式SpringBoot的实现方式就显得非常便捷了。SpringBoot的实现方式基本都是<strong>通过注解实现</strong>的。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/09/07/%E6%9C%AC%E5%9C%B0Git%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8BGitHub%E4%BB%93%E5%BA%93/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-09-07 22:40:44
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Springboot/" title="Springboot">
+                        <b>#</b> Springboot
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Java/" title="Java">
+                        <b>#</b> Java
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/09/08/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94yaml%E9%85%8D%E7%BD%AE/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E5%87%BA%E9%94%99%EF%BC%9A2003-Can%E2%80%99t-connect-to-MySQL-server-on-%E2%80%98localhost%E2%80%99-10038"><span class="toc-text">1. MySQL数据库连接出错：2003-Can’t connect to MySQL server on ‘localhost’(10038)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-User%E4%B8%ADsetter%E5%92%8Cgetter%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">2. User中setter和getter方法的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Java%E4%B8%AD%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">3. Java中构造方法的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-super%E4%B8%8Ethis%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">4. super与this关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Mapper%E6%B3%A8%E8%A7%A3%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-text">5. @Mapper注解的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-text">6. 依赖注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E4%BB%80%E4%B9%88%E6%98%AF%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%9F"><span class="toc-text">6.1 什么是依赖注入？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-text">6.2 如何实现依赖注入</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="chendh" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      构建电子地图网站——04 启动加载本地缓存:web+InitializingBean 
+      
+      
+      |
+    
+     陈大花er
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/chendh.png">
+    <link rel="icon" href="/images/chendh.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxxx-x"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxxx-x');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="陈大花er" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/chendh.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">陈大花er的博客</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">外链</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">构建电子地图网站——04 启动加载本地缓存:web+InitializingBean</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-11-23 14:20:08
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Springboot/" title="Springboot">
+                    <b>#</b> Springboot
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/GIS/" title="GIS">
+                    <b>#</b> GIS
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/PostSQL/" title="PostSQL">
+                    <b>#</b> PostSQL
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <blockquote>
+<p>前2节已经搭建好了开发平台，并通过03节的改变，已经能够对空间数据进行增删改查了，那么接下来继续对项目进行改造，以兼容更多的<strong>geometry</strong>类型,，并只需要对对3张表进行一个<strong>查询</strong>操作。由于数据库中的数据较多，直接查库较慢，所以我们把内容存在本地内存中，从内存中访问，本节主要是<strong>启动加载本地缓存</strong>！</p>
+</blockquote>
+<h2 id="1-model"><a href="#1-model" class="headerlink" title="1 model"></a>1 model</h2><p>把原先的PointModel类改成<strong>GeometryModel</strong>类，以兼容更多的<strong>geometry</strong>类型，相关的属性则是根据数据库中表的属性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GeometryModel</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Integer gId;</span><br><span class="line">    <span class="keyword">private</span> String namePy;</span><br><span class="line">    <span class="keyword">private</span> String nameCh;</span><br><span class="line">    <span class="keyword">private</span> String nameFt;</span><br><span class="line">    <span class="keyword">private</span> String presLoc;</span><br><span class="line">    <span class="keyword">private</span> String typePy;</span><br><span class="line">    <span class="keyword">private</span> String typeCh;</span><br><span class="line">    <span class="keyword">private</span> String levRank;</span><br><span class="line">    <span class="keyword">private</span> Integer begYr;</span><br><span class="line">    <span class="keyword">private</span> String begRule;</span><br><span class="line">    <span class="keyword">private</span> Integer endYr;</span><br><span class="line">    <span class="keyword">private</span> String endRule;</span><br><span class="line">    <span class="keyword">private</span> String geoSrc;</span><br><span class="line">    <span class="keyword">private</span> String compiler;</span><br><span class="line">    <span class="keyword">private</span> String gecomplr;</span><br><span class="line">    <span class="keyword">private</span> String checker;</span><br><span class="line">    <span class="keyword">private</span> String entDate;</span><br><span class="line">    <span class="keyword">private</span> String begChgTy;</span><br><span class="line">    <span class="keyword">private</span> String endChgTy;</span><br><span class="line">    <span class="keyword">private</span> Geometry geometry;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-dao"><a href="#2-dao" class="headerlink" title="2 dao"></a>2 dao</h2><p>只需要查询，并<strong>查询</strong>三张表。把不必要的删掉，补充需要的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MapDao</span> &#123;</span><br><span class="line">     <span class="comment">//针对v6_time_cnty_pts_utf_wgs84表</span></span><br><span class="line">    GeometryModel <span class="title function_">getCntyPoint</span><span class="params">(<span class="meta">@Param(&quot;gId&quot;)</span> Integer gId)</span>;</span><br><span class="line">    <span class="comment">//针对v6_time_pref_pts_utf_wgs84表</span></span><br><span class="line">    GeometryModel <span class="title function_">getPrefPoint</span><span class="params">(<span class="meta">@Param(&quot;gId&quot;)</span> Integer gId)</span>;</span><br><span class="line">    <span class="comment">//针对v6_time_pref_pgn_utf_wgs84表</span></span><br><span class="line">    GeometryModel <span class="title function_">getprefPolygon</span><span class="params">(<span class="meta">@Param(&quot;gId&quot;)</span> Integer gId)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-mapper"><a href="#3-mapper" class="headerlink" title="3 mapper"></a>3 mapper</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">mapper</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//http://mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.cc.dao.MapDao&quot;</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;geometryModelResult&quot;</span> <span class="attr">type</span>=<span class="string">&quot;com.cc.model.GeometryModel&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;gId&quot;</span> <span class="attr">column</span>=<span class="string">&quot;gid&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;BIGINT&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;namePy&quot;</span> <span class="attr">column</span>=<span class="string">&quot;name_py&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;nameCh&quot;</span> <span class="attr">column</span>=<span class="string">&quot;name_ch&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;nameFt&quot;</span> <span class="attr">column</span>=<span class="string">&quot;name_ft&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;presLoc&quot;</span> <span class="attr">column</span>=<span class="string">&quot;pres_loc&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;typePy&quot;</span> <span class="attr">column</span>=<span class="string">&quot;type_py&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;typeCh&quot;</span> <span class="attr">column</span>=<span class="string">&quot;type_ch&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;levRank&quot;</span> <span class="attr">column</span>=<span class="string">&quot;lev_rank&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;begYr&quot;</span> <span class="attr">column</span>=<span class="string">&quot;beg_yr&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;BIGINT&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;begRule&quot;</span> <span class="attr">column</span>=<span class="string">&quot;beg_rule&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;endYr&quot;</span> <span class="attr">column</span>=<span class="string">&quot;end_yr&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;BIGINT&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;endRule&quot;</span> <span class="attr">column</span>=<span class="string">&quot;end_rule&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;geoSrc&quot;</span> <span class="attr">column</span>=<span class="string">&quot;geo_src&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;compiler&quot;</span> <span class="attr">column</span>=<span class="string">&quot;compiler&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;gecomplr&quot;</span> <span class="attr">column</span>=<span class="string">&quot;gecomplr&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;checker&quot;</span> <span class="attr">column</span>=<span class="string">&quot;checker&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;entDate&quot;</span> <span class="attr">column</span>=<span class="string">&quot;ent_date&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;begChgTy&quot;</span> <span class="attr">column</span>=<span class="string">&quot;beg_chg_ty&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;endChgTy&quot;</span> <span class="attr">column</span>=<span class="string">&quot;end_chg_ty&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;geometry&quot;</span> <span class="attr">column</span>=<span class="string">&quot;geom&quot;</span> <span class="attr">typeHandler</span>=<span class="string">&quot;com.cc.mybatis.GeometryTypeHandler&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;CNTY_PTS&quot;</span>&gt;</span></span><br><span class="line">v6_time_cnty_pts_utf_wgs84</span><br><span class="line"><span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;PREF_PTS&quot;</span>&gt;</span></span><br><span class="line">v6_time_pref_pts_utf_wgs84</span><br><span class="line"><span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;PREF_PGN&quot;</span>&gt;</span></span><br><span class="line">v6_time_pref_pgn_utf_wgs84</span><br><span class="line"><span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;BASE_COLUMN&quot;</span>&gt;</span></span><br><span class="line">gid,name_py,name_ch,name_ft,pres_loc,type_py,type_ch,lev_rank,beg_yr,beg_rule,end_yr,end_rule,geo_src,compiler,gecomplr,checker,ent_date,beg_chg_ty,end_chg_ty,geom</span><br><span class="line"><span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;getCntyPoint&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;geometryModelResult&quot;</span>&gt;</span></span><br><span class="line">SELECT</span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;BASE_COLUMN&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">FROM</span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;CNTY_PTS&quot;</span>/&gt;</span></span><br><span class="line">WHERE gid=#&#123;gId&#125; LIMIT 1</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;getprefPolygon&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;geometryModelResult&quot;</span>&gt;</span></span><br><span class="line">SELECT</span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;BASE_COLUMN&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">FROM</span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;PREF_PGN&quot;</span>/&gt;</span></span><br><span class="line">WHERE gid=#&#123;gId&#125; LIMIT 1</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;getPrefPoint&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;geometryModelResult&quot;</span>&gt;</span></span><br><span class="line">SELECT</span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;BASE_COLUMN&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">FROM</span><br><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;PREF_PTS&quot;</span>/&gt;</span></span><br><span class="line">WHERE gid=#&#123;gId&#125; LIMIT 1</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-localcache"><a href="#4-localcache" class="headerlink" title="4 localcache"></a>4 localcache</h2><p>新建一个包localcache&#x3D;&#x3D;&gt;包下新建一个类GeometryCache.java</p>
+<p>直接查库较慢，所以我们把内容存在本地内存中，从内存中访问，这个类继承了<strong>InitializingBean</strong>，当程序启动的时候，数据就会加载。</p>
+<p>程序中加入了<strong>map&lt;&gt;<strong>，按照表名区分cntypts、prefpts、prefpgn，每张表存成一个list，新建一个查询方法</strong>getDynastyGeometry</strong>，用<strong>表名和时间区间查询对象</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GeometryCache</span> <span class="keyword">implements</span> <span class="title class_">InitializingBean</span> &#123;</span><br><span class="line">    </span><br><span class="line">    Map&lt;String, List&lt;GeometryModel&gt;&gt; historyGis =<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MapDao mapDao;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        List&lt;GeometryModel&gt; cntyGeometry=<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (mapDao.getCntyPoint(i)!=<span class="literal">null</span>)&#123;</span><br><span class="line">            cntyGeometry.add(mapDao.getCntyPoint(i));</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        historyGis.put(<span class="string">&quot;cntypts&quot;</span>,cntyGeometry);</span><br><span class="line">        List&lt;GeometryModel&gt; prefPtsGeometry=<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        i=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (mapDao.getPrefPoint(i)!=<span class="literal">null</span>)&#123;</span><br><span class="line">            prefPtsGeometry.add(mapDao.getCntyPoint(i));</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        historyGis.put(<span class="string">&quot;prefpts&quot;</span>,prefPtsGeometry);</span><br><span class="line">        List&lt;GeometryModel&gt; prefPgnGeometry=<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        i=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (mapDao.getprefPolygon(i)!=<span class="literal">null</span>)&#123;</span><br><span class="line">            prefPgnGeometry.add(mapDao.getprefPolygon(i));</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        historyGis.put(<span class="string">&quot;prefpgn&quot;</span>,prefPgnGeometry);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> List&lt;GeometryModel&gt; <span class="title function_">getDynastyGeometry</span><span class="params">(String category,Integer start,Integer end)</span>&#123;</span><br><span class="line">        List&lt;GeometryModel&gt; result=<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (GeometryModel g:historyGis.get(category)) &#123;</span><br><span class="line">            <span class="keyword">if</span>((g.getBegYr()&gt;=start &amp;&amp; g.getBegYr()&lt;=end)||(g.getEndYr()&gt;=start&amp;&amp;g.getEndYr()&lt;=end))&#123;</span><br><span class="line">                result.add(g);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-Service"><a href="#5-Service" class="headerlink" title="5 Service"></a>5 Service</h2><p>接口——MapService</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MapService</span> &#123;</span><br><span class="line">    List&lt;GeometryModel&gt; <span class="title function_">getDynastyGeom</span><span class="params">(String category,Integer start,Integer end)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现类——MapServiceImpl</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MapServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">MapService</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> GeometryCache geometryCache;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;GeometryModel&gt; <span class="title function_">getDynastyGeom</span><span class="params">(String category,Integer start,Integer end)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> geometryCache.getDynastyGeometry(category,start,end);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-controller"><a href="#6-controller" class="headerlink" title="6 controller"></a>6 controller</h2><p>用json跟前端交互数据，里面有一个方法<strong>geometryToJson</strong>，将<strong>geometry对象转成json</strong>，其实geometry.toString也可以将geometry转成String，但String有长度限制，转成json更安全些</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/history&quot;)</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MapController</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MapService mapService;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据表名和时间区间输出对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> category 表名简写</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> start 起始时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> end 终止时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/geometry&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> JSONObject <span class="title function_">getPoint</span><span class="params">(<span class="meta">@RequestParam(&quot;category&quot;)</span> String category,<span class="meta">@RequestParam(&quot;start&quot;)</span> Integer start,<span class="meta">@RequestParam(&quot;end&quot;)</span> Integer end)</span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            List&lt;GeometryModel&gt; result = mapService.getDynastyGeom(category, start, end);</span><br><span class="line">            <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">            jsonObject.put(<span class="string">&quot;number&quot;</span>, result.size());</span><br><span class="line">            <span class="type">JSONArray</span> <span class="variable">jsonArray</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONArray</span>();</span><br><span class="line">            <span class="keyword">for</span> (GeometryModel g : result) &#123;</span><br><span class="line">                <span class="type">JSONObject</span> <span class="variable">geom</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">                geom.put(<span class="string">&quot;gid&quot;</span>, g.getGId());</span><br><span class="line">                geom.put(<span class="string">&quot;namepy&quot;</span>, g.getNamePy());</span><br><span class="line">                geom.put(<span class="string">&quot;namech&quot;</span>, g.getNameCh());</span><br><span class="line">                geom.put(<span class="string">&quot;nameft&quot;</span>, g.getNameFt());</span><br><span class="line">                geom.put(<span class="string">&quot;presloc&quot;</span>, g.getPresLoc());</span><br><span class="line">                geom.put(<span class="string">&quot;typepy&quot;</span>, g.getTypePy());</span><br><span class="line">                geom.put(<span class="string">&quot;typech&quot;</span>, g.getTypeCh());</span><br><span class="line">                geom.put(<span class="string">&quot;levrank&quot;</span>, g.getLevRank());</span><br><span class="line">                geom.put(<span class="string">&quot;begyr&quot;</span>, g.getBegYr());</span><br><span class="line">                geom.put(<span class="string">&quot;begrule&quot;</span>, g.getBegRule());</span><br><span class="line">                geom.put(<span class="string">&quot;endyr&quot;</span>, g.getEndYr());</span><br><span class="line">                geom.put(<span class="string">&quot;endrule&quot;</span>, g.getEndRule());</span><br><span class="line">                geom.put(<span class="string">&quot;geosrc&quot;</span>, g.getGeoSrc());</span><br><span class="line">                geom.put(<span class="string">&quot;compiler&quot;</span>, g.getCompiler());</span><br><span class="line">                geom.put(<span class="string">&quot;gecomplr&quot;</span>, g.getGecomplr());</span><br><span class="line">                geom.put(<span class="string">&quot;checker&quot;</span>, g.getChecker());</span><br><span class="line">                geom.put(<span class="string">&quot;entdate&quot;</span>, g.getEntDate());</span><br><span class="line">                geom.put(<span class="string">&quot;begchgty&quot;</span>, g.getBegChgTy());</span><br><span class="line">                geom.put(<span class="string">&quot;endchgty&quot;</span>, g.getEndChgTy());</span><br><span class="line">                geom.put(<span class="string">&quot;geometry&quot;</span>, geometryToJson(g.getGeometry()));</span><br><span class="line">                jsonArray.add(geom);</span><br><span class="line">            &#125;</span><br><span class="line">            jsonObject.put(<span class="string">&quot;list&quot;</span>, jsonArray);</span><br><span class="line">            log.info(<span class="string">&quot;入参类别：&#123;&#125;，起始时间：&#123;&#125;，截止时间：&#123;&#125;&quot;</span>, category, start, end);</span><br><span class="line">            <span class="keyword">return</span> jsonObject;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            log.error(<span class="string">&quot;程序错误类型：&quot;</span>,e);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> JSONObject <span class="title function_">geometryToJson</span><span class="params">(Geometry geometry)</span>&#123;</span><br><span class="line">        JSONObject jsonObject=<span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">        jsonObject.put(<span class="string">&quot;type&quot;</span>,geometry.getGeometryType());</span><br><span class="line">        JSONArray coorList=<span class="keyword">new</span> <span class="title class_">JSONArray</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>;i&lt;geometry.getNumGeometries();i++)&#123;</span><br><span class="line">            JSONArray coors=<span class="keyword">new</span> <span class="title class_">JSONArray</span>();</span><br><span class="line">            Coordinate[] coordinates=geometry.getGeometryN(i).getCoordinates();</span><br><span class="line">            <span class="keyword">for</span> (Coordinate c:coordinates) &#123;</span><br><span class="line">                JSONObject jsonObjectCoor=<span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">                jsonObjectCoor.put(<span class="string">&quot;lng&quot;</span>,c.x);</span><br><span class="line">                jsonObjectCoor.put(<span class="string">&quot;lat&quot;</span>,c.y);</span><br><span class="line">                coors.add(jsonObjectCoor);</span><br><span class="line">            &#125;</span><br><span class="line">            coorList.add(coors);</span><br><span class="line">        &#125;</span><br><span class="line">        jsonObject.put(<span class="string">&quot;coordinates&quot;</span>,coorList);</span><br><span class="line">        <span class="keyword">return</span> jsonObject;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="7-测试"><a href="#7-测试" class="headerlink" title="7 测试"></a>7 测试</h2><p><strong>查询v6_time_pref_pgn_utf_wgs84表</strong></p>
+<p><code>http://localhost:8080/history/geometry?category=prefpgn&amp;start=-5000&amp;end=-221</code></p>
+<img src="https://s3.uuu.ovh/imgs/2022/11/23/6b585626f7c98761.png" style="zoom:50%;">
+
+<p><strong>查询v6_time_pref_pts_utf_wgs84表</strong></p>
+<p><code>localhost:8080/history/geometry?category=prefpts&amp;start=-5000&amp;end=-221</code></p>
+<img src="https://s3.uuu.ovh/imgs/2022/11/23/b7449e8d53870f0e.png" style="zoom:50%;">
+
+<p><strong>查询v6_time_cnty_pts_utf_wgs84表</strong></p>
+<p><code>localhost:8080/history/geometry?category=cntypts&amp;start=-5000&amp;end=-221</code></p>
+<img src="https://s3.uuu.ovh/imgs/2022/11/23/084dce9f29c121c2.png" style="zoom:50%;">
+
+
+
+
+
+
+
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/16/%E6%9E%84%E5%BB%BA%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE%E7%BD%91%E7%AB%99%E2%80%94%E2%80%9403%20%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E5%B9%B3%E5%8F%B0%EF%BC%9AMyBatis+TypeHandler+Jts/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-11-23 14:20:08
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Springboot/" title="Springboot">
+                        <b>#</b> Springboot
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/GIS/" title="GIS">
+                        <b>#</b> GIS
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/PostSQL/" title="PostSQL">
+                        <b>#</b> PostSQL
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/11/23/%E6%9E%84%E5%BB%BA%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE%E7%BD%91%E7%AB%99%E2%80%94%E2%80%9405%20try-catch%E5%92%8Clog%E6%97%A5%E5%BF%97/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-model"><span class="toc-text">1 model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-dao"><span class="toc-text">2 dao</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-mapper"><span class="toc-text">3 mapper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-localcache"><span class="toc-text">4 localcache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Service"><span class="toc-text">5 Service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-controller"><span class="toc-text">6 controller</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%B5%8B%E8%AF%95"><span class="toc-text">7 测试</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/Chendh1999">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:2387026245@qq.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3MjU1NzUxMg==&hid=1&sn=84f53e4f91c9690745b5f1bd0c4cfcfc&scene=18#wechat_redirect">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
