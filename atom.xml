@@ -6,7 +6,7 @@
   <link href="https://chendh.top/atom.xml" rel="self"/>
   
   <link href="https://chendh.top/"/>
-  <updated>2022-12-21T08:17:15.296Z</updated>
+  <updated>2023-02-05T08:09:28.713Z</updated>
   <id>https://chendh.top/</id>
   
   <author>
@@ -17,46 +17,90 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
-    <link href="https://chendh.top/2022/11/30/%E9%87%8D%E8%A3%85%E8%85%BE%E8%AE%AF%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    <id>https://chendh.top/2022/11/30/%E9%87%8D%E8%A3%85%E8%85%BE%E8%AE%AF%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/</id>
-    <published>2022-11-30T05:21:24.992Z</published>
-    <updated>2022-12-21T08:17:15.296Z</updated>
+    <title>Hexo部署到GitHub</title>
+    <link href="https://chendh.top/2023/02/04/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E4%B8%8A/"/>
+    <id>https://chendh.top/2023/02/04/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E4%B8%8A/</id>
+    <published>2023-02-04T07:54:39.173Z</published>
+    <updated>2023-02-05T08:09:28.713Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;hr&gt;
-&lt;h2 id=&quot;title：重装服务器之后的操作&quot;&gt;&lt;a href=&quot;#title：重装服务器之后的操作&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://s3.bmp.ovh/imgs/2023/02/04/f61324b2769a241f.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
         
       
     
     
     
+    <category term="Hexo" scheme="https://chendh.top/categories/Hexo/"/>
+    
+    <category term="GitHub" scheme="https://chendh.top/categories/Hexo/GitHub/"/>
+    
+    
+    <category term="Hexo" scheme="https://chendh.top/tags/Hexo/"/>
+    
+    <category term="GitHub" scheme="https://chendh.top/tags/GitHub/"/>
     
   </entry>
   
   <entry>
-    <title></title>
-    <link href="https://chendh.top/2022/11/25/1/"/>
-    <id>https://chendh.top/2022/11/25/1/</id>
+    <title>重装服务器后的操作</title>
+    <link href="https://chendh.top/2022/11/30/%E9%87%8D%E8%A3%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%8E%E7%9A%84%E6%93%8D%E4%BD%9C/"/>
+    <id>https://chendh.top/2022/11/30/%E9%87%8D%E8%A3%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%8E%E7%9A%84%E6%93%8D%E4%BD%9C/</id>
+    <published>2022-11-30T05:21:24.992Z</published>
+    <updated>2023-02-05T06:27:04.579Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;电子地图网站部署到服务器不成功，域名总是访问到博客网页，怎么弄都还是一样。也忘记了当时搭建hexo博客的时候到底是怎么做的了，服务器的配置还有文件这些也都非常混乱，就像之前的旧电脑一样没有明确的条理，软件安装什么的也都非常混乱，所以，为了之后能够更加条理清晰的管理服务器，也</summary>
+        
+      
+    
+    
+    
+    <category term="PostGIS" scheme="https://chendh.top/categories/PostGIS/"/>
+    
+    <category term="PostSQL" scheme="https://chendh.top/categories/PostGIS/PostSQL/"/>
+    
+    
+    <category term="PostGIS" scheme="https://chendh.top/tags/PostGIS/"/>
+    
+    <category term="PostSQL" scheme="https://chendh.top/tags/PostSQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>构建电子地图网站——08 腾讯云javaweb环境搭载与PostSQL库与PostGIS数据导入导出</title>
+    <link href="https://chendh.top/2022/11/25/%E6%9E%84%E5%BB%BA%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE%E7%BD%91%E7%AB%99%E2%80%94%E2%80%9408%20%E8%85%BE%E8%AE%AF%E4%BA%91javaweb%E7%8E%AF%E5%A2%83%E6%90%AD%E8%BD%BD%E4%B8%8EPostSQL%E5%BA%93%E4%B8%8EPostGIS%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/"/>
+    <id>https://chendh.top/2022/11/25/%E6%9E%84%E5%BB%BA%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE%E7%BD%91%E7%AB%99%E2%80%94%E2%80%9408%20%E8%85%BE%E8%AE%AF%E4%BA%91javaweb%E7%8E%AF%E5%A2%83%E6%90%AD%E8%BD%BD%E4%B8%8EPostSQL%E5%BA%93%E4%B8%8EPostGIS%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/</id>
     <published>2022-11-25T14:27:06.618Z</published>
-    <updated>2022-11-30T15:38:29.112Z</updated>
+    <updated>2023-02-05T07:11:24.442Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://cloud.tencent.com/developer/article/1592808&quot;&gt;在CentOS 7上安装&amp;amp;配置PostgreSQL 12 - 腾讯云开发者社区-腾讯云 (tencent.com)&lt;/a&gt;&lt;/p&gt;
-&lt;img</summary>
+    <summary type="html">&lt;p&gt;2023年2月4日，距离上次打开这个项目已经过去了2个多月了，2个月前因为在腾讯云服务器上部署PostSQL数据库总是出各种错误，最后又因为疫情不得不提前回家，所有这个项目止步于此已经2个多月了。现在重新开启，把之前的步骤和出的错误做个简单总结。现在距离腾讯云到期还有近一个</summary>
         
       
     
     
     
+    <category term="PostSQL" scheme="https://chendh.top/categories/PostSQL/"/>
+    
+    <category term="PostGIS" scheme="https://chendh.top/categories/PostSQL/PostGIS/"/>
+    
+    
+    <category term="PostGIS" scheme="https://chendh.top/tags/PostGIS/"/>
+    
+    <category term="PostSQL" scheme="https://chendh.top/tags/PostSQL/"/>
     
   </entry>
   
@@ -321,9 +365,9 @@
     
     <category term="GIS" scheme="https://chendh.top/tags/GIS/"/>
     
-    <category term="PostSQL" scheme="https://chendh.top/tags/PostSQL/"/>
-    
     <category term="PostGIS" scheme="https://chendh.top/tags/PostGIS/"/>
+    
+    <category term="PostSQL" scheme="https://chendh.top/tags/PostSQL/"/>
     
   </entry>
   
@@ -581,35 +625,6 @@
         
         
     <summary type="html">&lt;h2 id=&quot;1-SpringBoot-Web开发&quot;&gt;&lt;a href=&quot;#1-SpringBoot-Web开发&quot; class=&quot;headerlink&quot; title=&quot;1. SpringBoot Web开发&quot;&gt;&lt;/a&gt;1. SpringBoot Web开发&lt;/h2&gt;&lt;h3</summary>
-        
-      
-    
-    
-    
-    <category term="Springboot" scheme="https://chendh.top/categories/Springboot/"/>
-    
-    <category term="Java" scheme="https://chendh.top/categories/Springboot/Java/"/>
-    
-    
-    <category term="Springboot" scheme="https://chendh.top/tags/Springboot/"/>
-    
-    <category term="Java" scheme="https://chendh.top/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Springboot快速入门（二）——自定义启动器</title>
-    <link href="https://chendh.top/2022/09/13/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E8%87%AA%E5%AE%9A%E4%B9%89%E5%90%AF%E5%8A%A8%E5%99%A8/"/>
-    <id>https://chendh.top/2022/09/13/Springboot%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E8%87%AA%E5%AE%9A%E4%B9%89%E5%90%AF%E5%8A%A8%E5%99%A8/</id>
-    <published>2022-09-13T01:33:00.879Z</published>
-    <updated>2022-09-30T12:53:22.439Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;1-自动装配原理再理解&quot;&gt;&lt;a href=&quot;#1-自动装配原理再理解&quot; class=&quot;headerlink&quot; title=&quot;1.自动装配原理再理解&quot;&gt;&lt;/a&gt;1.自动装配原理再理解&lt;/h2&gt;&lt;h3 id=&quot;1-1-自动装配要点&quot;&gt;&lt;a</summary>
         
       
     

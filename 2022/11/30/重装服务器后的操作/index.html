@@ -11,7 +11,7 @@
   
   <title>
     
-      Category 
+      重装服务器后的操作 
       
       
       |
@@ -135,19 +135,202 @@ MathJax = {
 
 
   
-  <!-- 分类页 url形式：https://yoursite/categories/ -->
-  <div class="container category-index">
-    <div>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Springboot/">Springboot</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Springboot/Java/">Java</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Springboot/Java/Web/">Web</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Springboot/Java/Web/Thymeleaf/">Thymeleaf</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/GIS/">GIS</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/GIS/Springboot/">Springboot</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/GIS/Springboot/PostSQL/">PostSQL</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/GIS/PostGIS/">PostGIS</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/GIS/PostGIS/PostSQL/">PostSQL</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/GitHub/">GitHub</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Markdown/">Markdown</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vscode/">vscode</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PostSQL/">PostSQL</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/PostSQL/PostGIS/">PostGIS</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PostGIS/">PostGIS</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/PostGIS/PostSQL/">PostSQL</a><span class="category-list-count">1</span></li></ul></li></ul>
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">重装服务器后的操作</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2022-11-30 13:21:24
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="标签"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/PostGIS/" title="PostGIS">
+                    <b>#</b> PostGIS
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/PostSQL/" title="PostSQL">
+                    <b>#</b> PostSQL
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>电子地图网站部署到服务器不成功，域名总是访问到博客网页，怎么弄都还是一样。也忘记了当时搭建hexo博客的时候到底是怎么做的了，服务器的配置还有文件这些也都非常混乱，就像之前的旧电脑一样没有明确的条理，软件安装什么的也都非常混乱，所以，为了之后能够更加条理清晰的管理服务器，也为了能够成功部署项目网站，现在重新安装服务器，之前搭载的hexo博客也相当于要重头开始！！！希望能够尽快完成项目搭建！下面将把对服务器的所有操作都记录下来，以便后续工作安排！</p>
+<blockquote>
+<p>重新安装服务器选择的还是<strong>宝塔Linux面板</strong></p>
+</blockquote>
+<h2 id="1-宝塔面板登录连接"><a href="#1-宝塔面板登录连接" class="headerlink" title="1 宝塔面板登录连接"></a>1 宝塔面板登录连接</h2><p>在<strong>“应用管理”</strong>处直接点击登录，执行<code>sudo /etc/init.d/bt default</code>命令获得宝塔面板的账号和密码，接着就可以在宝塔面板中登录服务器了！</p>
+<img src="https://s3.bmp.ovh/imgs/2023/02/04/80edb4c173399a8a.png" alt="image-20221130134117245" style="zoom:50%;">
+
+
+
+<h2 id="2-宝塔面板软件安装"><a href="#2-宝塔面板软件安装" class="headerlink" title="2 宝塔面板软件安装"></a>2 宝塔面板软件安装</h2><h3 id="2-1-安装jdk11"><a href="#2-1-安装jdk11" class="headerlink" title="2.1 安装jdk11"></a>2.1 安装jdk11</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-11-openjdk</span><br></pre></td></tr></table></figure>
+
+<p>查看版本：<code>java -version</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openjdk version &quot;11.0.17&quot; 2022-10-18 LTS</span><br><span class="line">OpenJDK Runtime Environment (Red_Hat-11.0.17.0.8-2.el7_9) (build 11.0.17+8-LTS)</span><br><span class="line">OpenJDK 64-Bit Server VM (Red_Hat-11.0.17.0.8-2.el7_9) (build 11.0.17+8-LTS, mixed mode, sharing)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-2-安装PostgreSQL"><a href="#2-2-安装PostgreSQL" class="headerlink" title="2.2 安装PostgreSQL"></a>2.2 安装PostgreSQL</h3><ul>
+<li><p>安装PostgreSQL管理器</p>
+</li>
+<li><p>安装PostgreSQL12</p>
+</li>
+<li><p>终端安装：</p>
+<ul>
+<li><p>导入yum源</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装PostgreSQL服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y postgresql12 postgresql12-server</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install postgresql12-devel</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装postgis</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install postgis</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看postgresql12的安装版本和安装位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qi postgresql12      # 查看版本</span><br><span class="line">rpm -ql postgresql12      # 查看安装位置</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在home目录下，新建一个文件夹postgresql_data；把默认的postgresql的数据库移动到这个文件夹中；设置这个文件夹的读写权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/postgresql_data</span><br><span class="line"></span><br><span class="line">chown postgres:postgres /home/postgresql_data</span><br><span class="line"></span><br><span class="line">chmod 750 /home/postgresql_data</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置环境变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export PATH=/usr/pgsql-12/bin:$PATH</span><br><span class="line"></span><br><span class="line">export LD_LIBRARY_PATH=/usr/pgsql-12/lib</span><br><span class="line"></span><br><span class="line">export PGDATA=/home/postgresql_data</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把数据库目录改到&#x2F;home&#x2F;postgresql_data下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/lib/systemd/system/postgresql-12.service</span><br><span class="line"></span><br><span class="line">修改内容如下：</span><br><span class="line">#Location of database directory</span><br><span class="line">Environment=PGDATA=/home/postgresql_data</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">psql: error: could not connect to server: No such file or directory</span><br><span class="line">        Is the server running locally and accepting</span><br><span class="line">        connections on Unix domain socket &quot;/data/pgdata/15432/.s.PGSQL.5432&quot;?</span><br><span class="line">        </span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-8-centos ~]# su postgres</span><br><span class="line">bash-4.2$ psql</span><br><span class="line">could not change directory to &quot;/root&quot;: Permission denied</span><br><span class="line">psql: error: could not connect to server: No such file or directory</span><br><span class="line">        Is the server running locally and accepting</span><br><span class="line">        connections on Unix domain socket &quot;/var/run/postgresql/.s.PGSQL.5432&quot;?</span><br><span class="line">bash: history: /home/postgres/.bash_history: cannot create: No such file or directory</span><br><span class="line">bash-4.2$ </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="2-3-安装Nginx"><a href="#2-3-安装Nginx" class="headerlink" title="2.3 安装Nginx"></a>2.3 安装Nginx</h3><p><img src="https://s3.bmp.ovh/imgs/2023/02/04/dcbebdeb93403797.png" alt="image-20221221154030678"></p>
+<p>nginx: the configuration file &#x2F;www&#x2F;server&#x2F;nginx&#x2F;conf&#x2F;nginx.conf syntax is ok<br>nginx: configuration file &#x2F;www&#x2F;server&#x2F;nginx&#x2F;conf&#x2F;nginx.conf test is successful</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/25/%E6%9E%84%E5%BB%BA%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE%E7%BD%91%E7%AB%99%E2%80%94%E2%80%9408%20%E8%85%BE%E8%AE%AF%E4%BA%91javaweb%E7%8E%AF%E5%A2%83%E6%90%AD%E8%BD%BD%E4%B8%8EPostSQL%E5%BA%93%E4%B8%8EPostGIS%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2022-11-30 13:21:24
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="标签"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/PostGIS/" title="PostGIS">
+                        <b>#</b> PostGIS
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/PostSQL/" title="PostSQL">
+                        <b>#</b> PostSQL
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/02/04/hexo%E9%83%A8%E7%BD%B2%E5%88%B0GitHub%E4%B8%8A/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E7%99%BB%E5%BD%95%E8%BF%9E%E6%8E%A5"><span class="toc-text">1 宝塔面板登录连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-text">2 宝塔面板软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%89%E8%A3%85jdk11"><span class="toc-text">2.1 安装jdk11</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%AE%89%E8%A3%85PostgreSQL"><span class="toc-text">2.2 安装PostgreSQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%AE%89%E8%A3%85Nginx"><span class="toc-text">2.3 安装Nginx</span></a></li></ol></li></ol>
     </div>
   </div>
-  
 
   
+<script src="/js/catalog.js"></script>
 
-  
 
-  
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <div id="vcomments"></div>
+
+  <script>
+    new Valine({
+      el: '#vcomments',
+      appId: 'j73OlR7xxxxxPDrO-gzGzoHsz',
+      appKey: 'mhyUfuxxxxk41wc25',
+      placeholder: 'Welcome!',
+      avatar: 'retro',
+      lang: 'zh-CN'
+    })
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
 
         
 <div class="footer">
